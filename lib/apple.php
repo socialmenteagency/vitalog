@@ -93,7 +93,7 @@ function salud_apple_parse_zip(string $path): array {
         $carry = '';
         $inflated = 0;
         while ($left > 0) {
-            $chunk = fread($fh, min(262144, $left));
+            $chunk = fread($fh, min(32768, $left));   // trozo chico: un deflate puede inflar ~1000:1 y no debe agotar la memoria
             if ($chunk === false || $chunk === '') break;
             $left -= strlen($chunk);
             $data = $ctx ? inflate_add($ctx, $chunk) : $chunk;

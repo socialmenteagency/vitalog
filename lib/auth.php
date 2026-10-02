@@ -23,21 +23,24 @@ function salud_attempts_file(): string {
 // Estructura: {"ip": {ip: {first, count}}, "admin": {first, count}, "global": {first, count}}.
 function salud_rate_open() {
     if (!is_dir(SALUD_DATA_DIR)) mkdir(SALUD_DATA_DIR, 0755, true);
-    $fh = fopen(salud_attempts_file(), 'c+');
+    $fh = @fopen(salud_attempts_file(), 'c+');
     if ($fh) flock($fh, LOCK_EX);
+    else error_log('salud: no se pudo abrir login_attempts.json; el límite de intentos no está activo');
     return $fh;
 }
 
 function salud_rate_read($fh): array {
     rewind($fh);
     $all = json_decode((string)stream_get_contents($fh), true);
-    $all = is_array($all) && isset($all['ip']) ? $all : ['ip' => [], 'admin' => null, 'global' => null];
+    $all = is_array($all) ? $all : [];
+    $all['ip'] = isset($all['ip']) && is_array($all['ip']) ? $all['ip'] : [];
     $now = time();
-    foreach ($all['ip'] as $k => $rec) {
-        if ($now - ($rec['first'] ?? 0) > SALUD_FAIL_WINDOW) unset($all['ip'][$k]);
+    foreach ($all['ip'] as $k => $rec) {   // un archivo con otra forma (editado a mano, versión vieja) se descarta, no rompe el login
+        if (!is_array($rec) || $now - (int)($rec['first'] ?? 0) > SALUD_FAIL_WINDOW) unset($all['ip'][$k]);
     }
     foreach (['admin', 'global'] as $k) {
-        if ($all[$k] && $now - ($all[$k]['first'] ?? 0) > SALUD_FAIL_WINDOW) $all[$k] = null;
+        $rec = $all[$k] ?? null;
+        $all[$k] = is_array($rec) && $now - (int)($rec['first'] ?? 0) <= SALUD_FAIL_WINDOW ? $rec : null;
     }
     return $all;
 }
@@ -49,7 +52,7 @@ function salud_rate_write($fh, array $all): void {
     fflush($fh);
 }
 
-function salud_rate_count(?array $rec): int { return $rec ? (int)$rec['count'] : 0; }
+function salud_rate_count($rec): int { return is_array($rec) ? (int)($rec['count'] ?? 0) : 0; }
 
 function salud_rate_over(array $all, string $role): bool {
     return salud_rate_count($all['ip'][salud_client_ip()] ?? null) >= SALUD_MAX_FAILS
@@ -87,12 +90,17 @@ function salud_rate_refund(string $role): void {
     $fh = salud_rate_open();
     if (!$fh) return;
     $all = salud_rate_read($fh);
-    unset($all['ip'][salud_client_ip()]);
+    $ip = salud_client_ip();
+    // devuelve solo ESTE intento (no borra los anteriores: quien tenga una clave válida no puede reiniciar su contador)
     foreach ($role === 'admin' ? ['admin', 'global'] : ['global'] as $k) {
         if ($all[$k]) {
             $all[$k]['count'] = max(0, $all[$k]['count'] - 1);
             if ($all[$k]['count'] === 0) $all[$k] = null;
         }
+    }
+    if (isset($all['ip'][$ip])) {
+        $all['ip'][$ip]['count'] = max(0, (int)$all['ip'][$ip]['count'] - 1);
+        if ($all['ip'][$ip]['count'] === 0) unset($all['ip'][$ip]);
     }
     salud_rate_write($fh, $all);
     flock($fh, LOCK_UN);

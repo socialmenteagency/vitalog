@@ -615,7 +615,7 @@ $keySource = fn(string $setting, string $fromConfig): string => salud_setting($s
     <div class="row" style="margin-top:12px">
       <div><label for="p-pass">Contraseña de /salud</label>
         <input id="p-pass" type="password" name="password" autocomplete="new-password" minlength="12" placeholder="Vacío = no cambiarla">
-        <p class="hint">Mínimo 8 caracteres y distinta a la de las demás personas.</p></div>
+        <p class="hint">Mínimo 12 caracteres y distinta a la de las demás personas.</p></div>
       <div class="actions" style="align-self:flex-start;padding-top:22px"><button type="submit">Guardar perfil</button></div>
     </div>
   </form>

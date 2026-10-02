@@ -82,7 +82,9 @@ if (PHP_SAPI !== 'cli') {
     if (salud_is_https() && !SALUD_DEMO_MODE) header('Strict-Transport-Security: max-age=31536000');
 
     ini_set('session.use_strict_mode', '1');
-    session_name('saludsid');
+    // La instancia demo usa otro nombre de cookie: su sesión de admin automática no sirve en una instalación real del mismo servidor.
+    $sessionName = SALUD_DEMO_MODE ? 'saludsid_demo' : 'saludsid';
+    session_name($sessionName);
     session_set_cookie_params([
         'lifetime' => 60 * 60 * 24 * 30,
         'path'     => '/',
@@ -91,7 +93,7 @@ if (PHP_SAPI !== 'cli') {
         'secure'   => salud_is_https(),
     ]);
     // Sin cookie de sesión (visitas anónimas, escáneres) no se crea sesión; se crea al enviar un formulario (login).
-    if (isset($_COOKIE['saludsid']) || ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' || SALUD_DEMO_MODE) {
+    if (isset($_COOKIE[$sessionName]) || ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' || SALUD_DEMO_MODE) {
         session_start();
         if (!empty($_SESSION['role']) && !SALUD_DEMO_MODE) {
             $now = time();

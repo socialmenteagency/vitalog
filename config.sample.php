@@ -44,6 +44,9 @@ define('SEED_DUMMY', true);
 // Set false only if your server has no certificate (for example a test on your local network).
 // define('SALUD_FORCE_HTTPS', false);
 
+// If you get locked out (too many failed logins: 8 per IP, 10 for the backend password or 60 overall, per 15 min):
+// wait 15 minutes, or delete  data/login_attempts.json  in cPanel's File Manager and sign in again.
+
 // Only for a public demo site (NOT for your real install): when true, everybody is signed in
 // without a password, nothing is saved, no files are uploaded and no AI is called.
 // define('SALUD_DEMO_MODE', true);
