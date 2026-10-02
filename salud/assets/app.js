@@ -1017,6 +1017,100 @@
     </section>`;
   }
 
+  // ---------- pregúntale a la IA ----------
+  // Pregunta libre al servidor (salud/ask.php), que responde con los datos y tendencias de la
+  // persona. El estado vive aquí para sobrevivir al cambio de idioma (que re-renderiza todo).
+
+  const ASK = S.ask ? { items: (S.ask.history || []).slice(), draft: '', busy: false, error: '', left: S.ask.left } : null;
+
+  // Texto plano del modelo → párrafos y listas (todo escapado)
+  function askAnswerHtml(text) {
+    let html = '', list = [];
+    const flush = () => {
+      if (list.length) { html += '<ul>' + list.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>'; list = []; }
+    };
+    String(text).split('\n').forEach(raw => {
+      const l = raw.replace(/\*\*/g, '').trim();
+      if (!l) { flush(); return; }
+      const m = l.match(/^[-•*]\s+(.*)$/);
+      if (m) list.push(m[1]);
+      else { flush(); html += '<p>' + esc(l) + '</p>'; }
+    });
+    flush();
+    return html;
+  }
+
+  function askItemHtml(it) {
+    return `<article class="ask-item">
+      <p class="ask-q">${esc(it.q)}</p>
+      <div class="ask-a">${askAnswerHtml(it.a)}</div>
+      <p class="ask-date">${esc(fmtDateLong(String(it.at).slice(0, 10)))}</p>
+    </article>`;
+  }
+
+  function askHtml() {
+    if (!ASK) return '';
+    const last = ASK.items[0], older = ASK.items.slice(1);
+    return `<section class="section ai-ask">
+      <h2 class="section-title">${esc(t('ask_title'))}</h2>
+      <p class="ask-hint">${esc(t('ask_hint'))}</p>
+      <form class="ask-form" novalidate>
+        <textarea name="q" rows="2" maxlength="${Number(S.ask.max) || 500}" placeholder="${esc(t('ask_placeholder'))}" aria-label="${esc(t('ask_title'))}">${esc(ASK.draft)}</textarea>
+        <div class="ask-actions">
+          <button type="submit" class="ask-btn"${ASK.busy ? ' disabled' : ''}>${esc(ASK.busy ? t('ask_thinking') : t('ask_button'))}</button>
+          <span class="ask-left">${esc(t('ask_left').replace('{n}', ASK.left))}</span>
+        </div>
+        <p class="ask-error" role="alert"${ASK.error ? '' : ' hidden'}>${esc(ASK.error)}</p>
+      </form>
+      ${last ? askItemHtml(last) : ''}
+      ${older.length ? `<details class="ask-older"><summary>${esc(t('ask_older'))}</summary>${older.map(askItemHtml).join('')}</details>` : ''}
+      <p class="ai-disc">${esc(t('ask_note'))}</p>
+    </section>`;
+  }
+
+  function refreshAsk() {
+    const el = document.querySelector('.ai-ask');
+    if (!el) return;
+    el.outerHTML = askHtml();
+    bindAsk();
+  }
+
+  function submitAsk() {
+    const q = ASK.draft.trim();
+    if (ASK.busy || !q) return;
+    ASK.busy = true;
+    ASK.error = '';
+    refreshAsk();
+    const fd = new FormData();
+    fd.append('question', q);
+    fd.append('lang', STATE.lang);
+    fd.append('csrf', S.ask.csrf);
+    fetch(S.ask.url, { method: 'POST', body: fd, credentials: 'same-origin' })
+      .then(r => r.json().catch(() => ({})).then(j => ({ ok: r.ok, j })))
+      .then(({ ok, j }) => {
+        if (ok && j.ok) { ASK.items.unshift(j.item); ASK.draft = ''; ASK.left = j.left; }
+        else ASK.error = j.error || t('ask_error');
+      })
+      .catch(() => { ASK.error = t('ask_error'); })
+      .then(() => {
+        ASK.busy = false;
+        refreshAsk();
+        const first = document.querySelector('.ask-item');
+        if (first && !ASK.error && first.scrollIntoView) first.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      });
+  }
+
+  function bindAsk() {
+    const form = document.querySelector('.ask-form');
+    if (!form) return;
+    const ta = form.querySelector('textarea');
+    ta.addEventListener('input', () => { ASK.draft = ta.value; });
+    ta.addEventListener('keydown', ev => {
+      if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) { ev.preventDefault(); submitAsk(); }
+    });
+    form.addEventListener('submit', ev => { ev.preventDefault(); submitAsk(); });
+  }
+
   function scrollMatrixToEnd() {
     const wrap = document.querySelector('.matrix-wrap');
     if (wrap && wrap.scrollWidth > wrap.clientWidth) wrap.scrollLeft = wrap.scrollWidth;
@@ -1057,6 +1151,7 @@
         ? (hasExams ? matrixHtml() : standaloneVitalsHtml())
         : `<section class="section"><p class="hdr-meta">${esc(t('no_data'))}</p></section>`) +
       aiRecsHtml() +
+      askHtml() +
       `<footer class="foot"><span>${esc(t('updated'))}: ${esc(genDate)}</span><a href="https://github.com/socialmenteagency/vitalog" target="_blank" rel="noopener">Vitalog · AGPL-3.0</a></footer>`;
 
     if (hasExams) {
@@ -1079,6 +1174,7 @@
     });
     const printBtn = document.getElementById('btn-print');
     if (printBtn) printBtn.addEventListener('click', () => window.print());
+    bindAsk();
 
     app.querySelectorAll('.analyte-row, .vital-row').forEach(row => {
       const open = () => (row.dataset.analyte ? openDetail(row.dataset.analyte) : openVitalDetail(row.dataset.metric));

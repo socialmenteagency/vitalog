@@ -23,14 +23,18 @@ Resulting URLs: `https://your-domain/salud` (viewer) and `https://your-domain/ba
    - `SALUD_PASSWORD`: viewer password of the first person (the one you share with a doctor).
    - `BACKEND_PASSWORD`: admin password. **Change both; the sample values are placeholders.**
    - `SALUD_PATIENT_NAME`: name of the first person (optional).
-   - `ANTHROPIC_API_KEY`: optional, for extracting lab PDFs with Claude. Without it you
-     can still enter or import results by hand.
-   - `GEMINI_API_KEY` / `GEMINI_MODEL`: optional, for the AI summary and recommendations.
-     Use a key from an account **with billing enabled**: the free tier lets Google use
-     what you send.
-3. Open `https://your-domain/salud`. With `SEED_DUMMY` set to `true`, the first visit creates
+   - The AI keys do **not** need to go in this file: paste them in the backend instead
+     (card **Claves de IA**), and they are saved in the database. If you prefer the file, the
+     constants `ANTHROPIC_API_KEY` (lab PDF extraction with Claude) and `GEMINI_API_KEY` /
+     `GEMINI_MODEL` (summary, recommendations and "Ask the AI") still work as a fallback; a key
+     pasted in the backend takes priority. Without any key you can still enter or import results by hand.
+   - Use a Gemini key from an account **with billing enabled**: the free tier lets Google use
+     what you send. Google Search (used by "Ask the AI" to read product labels) may need billing
+     too; if Google reports no quota, the app answers without searching.
+3. Open `https://your-domain/backend`, log in with `BACKEND_PASSWORD`, and paste your keys in **Claves de IA** (optional).
+4. Open `https://your-domain/salud`. With `SEED_DUMMY` set to `true`, the first visit creates
    the database and fills it with invented sample data so you can see the design.
-4. When you are ready for real data: log into `/backend` → *Delete sample data*.
+5. When you are ready for real data: log into `/backend` → *Delete sample data*.
 
 If you use the cPanel *Git Version Control* feature, the included `.cpanel.yml` copies the
 code to `public_html/` and never touches `data/` (database, PDFs and config survive every
@@ -51,9 +55,9 @@ deploy). It must sit at the root of the cloned repository.
 - `data/` and `lib/` are blocked from the web; PDFs are only served through an admin session.
 - Login rate limit: 8 failed attempts / 15 min per IP, plus a 1 s penalty.
 - Session cookies are `HttpOnly`, `SameSite=Lax`, and `Secure` over HTTPS.
-- Per-person viewer passwords are stored hashed in the database. The admin password and the
-  API keys live **in plain text** in `data/config.php` (so they can be edited from a file
-  manager). Whoever can read your server files can read them: the hosting account is the real
+- Per-person viewer passwords are stored hashed in the database. The admin password lives
+  **in plain text** in `data/config.php`, and the API keys are plain text too (in the database
+  when pasted in the backend, or in `data/config.php`). Whoever can read your server files can read them: the hosting account is the real
   perimeter. Do not reuse passwords from other services.
 - This is a personal/family tool, not a multi-tenant service. Do not host other people's health
   data without doing your own privacy and legal review (see the disclaimer in the README).

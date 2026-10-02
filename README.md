@@ -29,8 +29,16 @@ Portuguese (toggle in the page).
   ask the doctor, in Spanish and Portuguese. It is saved as a **draft**, you edit and publish
   it. It never diagnoses and never suggests medication; the person's name is not sent to the
   model.
+- **Ask the AI (optional).** A box at the bottom of the page where you ask things like "can I have a
+  zero-sugar paçoquita for dessert instead of an alfajor?". The answer takes the person's labs,
+  trends, food preferences and allergies into account (and can read a product's label through Google
+  Search). Limited to 500 characters per question and 15 questions per person per day; questions
+  and answers are kept in the database. Same safety rules as the summary: no diagnosis, no
+  medication advice.
 - **PDF extraction (optional).** Upload a lab PDF; Claude extracts the values for you to review
   before saving.
+- **API keys from the browser.** Paste your Gemini and Claude keys in the backend ("Claves de IA"
+  card) instead of editing any file.
 - **Overdue-exam reminders**, a printable view, and a backend for uploads and imports.
 
 ## Quick start
@@ -56,7 +64,8 @@ Development mode only; never use it on a public host.
   to Google (Gemini) and/or Anthropic (Claude) through their APIs. Use keys from accounts whose
   terms keep your data out of model training, and read their policies.
 - The page loads fonts from Google Fonts. Self-host them if that matters to you.
-- Admin password and API keys sit in plain text in `data/config.php`; protect your hosting
+- The admin password (in `data/config.php`) and your API keys (in the database or the config file) are
+  stored in plain text; protect your hosting
   account. See [DEPLOY.md](DEPLOY.md#security-what-it-covers-and-what-it-does-not).
 - If you host other people's data, you are responsible for their consent and for the privacy
   laws that apply to you (for example LGPD in Brazil, GDPR in Europe, Ley 18.331 in Uruguay).

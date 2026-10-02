@@ -292,6 +292,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'login
         b_redirect('Resumen retirado de /salud.');
     }
 
+    if ($action === 'save_keys') {
+        foreach (['gemini_api_key' => 'gemini_key', 'anthropic_api_key' => 'anthropic_key'] as $setting => $field) {
+            $v = trim((string)($_POST[$field] ?? ''));
+            if (!empty($_POST['clear_' . $field])) {
+                salud_setting_set($setting, null);
+            } elseif ($v !== '') {
+                if (!preg_match('/^[\x21-\x7E]{20,300}$/', $v)) b_redirect(null, 'Esa clave no parece válida: va sin espacios y tiene entre 20 y 300 caracteres. Cópiala de nuevo completa.');
+                salud_setting_set($setting, $v);
+            }
+        }
+        $model = trim((string)($_POST['gemini_model'] ?? ''));
+        if ($model !== '' && !preg_match('/^[A-Za-z0-9._-]{3,60}$/', $model)) b_redirect(null, 'El nombre del modelo no es válido (ej.: gemini-2.5-flash).');
+        salud_setting_set('gemini_model', $model === GEMINI_MODEL ? null : $model);
+        salud_setting_set('ask_search', isset($_POST['ask_search']) ? '1' : '0');
+        salud_setting_set('ask_search_off_until', null);   // guardar vuelve a intentar la búsqueda
+        b_redirect('Ajustes de IA guardados.');
+    }
+
     if ($action === 'import_exams') {
         $f = $_FILES['json'] ?? null;
         if (!$f || $f['error'] !== UPLOAD_ERR_OK) b_redirect(null, 'No se pudo subir el archivo JSON.');
@@ -484,6 +502,48 @@ b_layout_top('Backend');
 </div>
 <?php endif; ?>
 
+<?php
+$geminiKey = salud_gemini_key();
+$claudeKey = salud_anthropic_key();
+$keySource = fn(string $setting, string $fromConfig): string => salud_setting($setting) !== null ? 'guardada aquí' : ($fromConfig !== '' ? 'viene de data/config.php' : '');
+?>
+<details class="card" <?= ($geminiKey === '' || $claudeKey === '') ? 'open' : '' ?>>
+  <summary style="cursor:pointer"><h2 style="display:inline">Claves de IA</h2>
+    <span class="pill" style="margin-left:8px"><?= $geminiKey !== '' ? 'Gemini ✓' : 'Gemini: falta' ?> · <?= $claudeKey !== '' ? 'Claude ✓' : 'Claude: falta' ?></span></summary>
+  <p class="hint" style="margin:10px 0">Pega aquí las claves de las IA: no hace falta editar ningún archivo. Se guardan en la base del servidor (carpeta protegida <code class="pill">data/</code>)
+  y nunca se muestran completas. Sin ninguna clave la página funciona igual, solo sin las funciones de IA.</p>
+  <form method="post" autocomplete="off">
+    <input type="hidden" name="action" value="save_keys">
+    <input type="hidden" name="p" value="<?= $pid ?>">
+    <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+    <div class="row">
+      <div style="flex:2"><label for="k-gemini">Clave de Gemini (Google)</label>
+        <input id="k-gemini" type="password" name="gemini_key" autocomplete="off" spellcheck="false"
+               placeholder="<?= $geminiKey !== '' ? e(salud_mask_key($geminiKey)) . ' · ' . e($keySource('gemini_api_key', GEMINI_API_KEY)) . ' — pega otra para cambiarla' : 'Pega tu clave aquí' ?>">
+        <p class="hint">Para el resumen, las recomendaciones y «Pregúntale a la IA». Se crea gratis en
+        <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>;
+        usa una cuenta <strong>con facturación activa</strong>, porque en el plan gratuito Google puede usar lo que se envía.
+        <?php if (salud_setting('gemini_api_key') !== null): ?><label style="display:inline;font-weight:400"><input type="checkbox" name="clear_gemini_key" value="1"> borrar la clave guardada</label><?php endif; ?></p></div>
+      <div><label for="k-model">Modelo de Gemini</label>
+        <input id="k-model" type="text" name="gemini_model" maxlength="60" value="<?= e(salud_gemini_model()) ?>"></div>
+    </div>
+    <div style="margin-top:12px"><label for="k-claude">Clave de Claude (Anthropic)</label>
+      <input id="k-claude" type="password" name="anthropic_key" autocomplete="off" spellcheck="false"
+             placeholder="<?= $claudeKey !== '' ? e(salud_mask_key($claudeKey)) . ' · ' . e($keySource('anthropic_api_key', ANTHROPIC_API_KEY)) . ' — pega otra para cambiarla' : 'Pega tu clave aquí' ?>">
+      <p class="hint">Solo para leer los PDF de laboratorio automáticamente. Se crea en
+      <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com/settings/keys</a>.
+      <?php if (salud_setting('anthropic_api_key') !== null): ?><label style="display:inline;font-weight:400"><input type="checkbox" name="clear_anthropic_key" value="1"> borrar la clave guardada</label><?php endif; ?></p></div>
+    <div style="margin-top:12px"><label style="display:flex;gap:8px;align-items:flex-start;font-weight:400">
+      <input type="checkbox" name="ask_search" value="1" <?= salud_ask_search() ? 'checked' : '' ?> style="margin-top:3px">
+      <span>Dejar que «Pregúntale a la IA» busque en Google la etiqueta de un producto concreto (mejora las respuestas sobre alimentos de marca; Google cobra un extra por búsqueda pasado su cupo gratuito).</span></label>
+      <?php if ((int)(salud_setting('ask_search_off_until') ?? 0) > time()): ?>
+        <p class="hint" style="margin-top:6px"><strong style="color:var(--bad)">La búsqueda está en pausa:</strong> Google respondió que esta clave no tiene cupo de búsqueda (suele hacer falta facturación activa en el proyecto de la clave).
+        Mientras tanto la IA responde sin buscar; se reintenta sola pasadas unas horas, o al guardar estos ajustes.</p>
+      <?php endif; ?></div>
+    <div class="actions" style="margin-top:12px;justify-content:flex-start"><button type="submit">Guardar ajustes de IA</button></div>
+  </form>
+</details>
+
 <div class="card">
   <h2>Subir examen (PDF)</h2>
   <form method="post" enctype="multipart/form-data">
@@ -496,7 +556,7 @@ b_layout_top('Backend');
       <div><button type="submit">Extraer valores</button></div>
     </div>
     <p class="hint">La IA lee el PDF y te muestra los valores para revisar antes de guardar (paso 2).
-    <?php if (ANTHROPIC_API_KEY === ''): ?><strong style="color:var(--bad)">Falta ANTHROPIC_API_KEY en data/config.php — la extracción no va a funcionar.</strong><?php endif; ?></p>
+    <?php if (salud_anthropic_key() === ''): ?><strong style="color:var(--bad)">Falta la clave de Claude: pégala en «Claves de IA», arriba — sin ella la extracción no funciona.</strong><?php endif; ?></p>
   </form>
   <form method="post" style="margin-top:14px;border-top:1px solid var(--line);padding-top:14px">
     <input type="hidden" name="action" value="new_exam">
@@ -556,7 +616,7 @@ b_layout_top('Backend');
   <h2>Resumen y recomendaciones (IA)</h2>
   <p class="hint" style="margin-bottom:10px">Gemini redacta un resumen del estado actual y recomendaciones de hábitos a partir de los datos de <?= e($person['name']) ?>
   (sin enviar su nombre). Queda como <strong>borrador</strong>: solo se ve en /salud cuando lo publicas. Vuelve a generarlo cuando cargues exámenes nuevos o cambie el perfil.
-  <?php if (GEMINI_API_KEY === ''): ?><strong style="color:var(--bad)">Falta GEMINI_API_KEY en data/config.php — no se puede generar.</strong><?php endif; ?></p>
+  <?php if (salud_gemini_key() === ''): ?><strong style="color:var(--bad)">Falta la clave de Gemini: pégala en «Claves de IA», arriba — sin ella no se puede generar.</strong><?php endif; ?></p>
   <?php if ($draft): $d = $draft['es']; ?>
     <div class="draft">
       <p class="pill" style="margin-bottom:6px">Borrador del <?= e(substr((string)$ai['draft_at'], 0, 16)) ?> · <?= e((string)$ai['draft_model']) ?>

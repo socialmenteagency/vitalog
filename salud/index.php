@@ -3,6 +3,7 @@ require dirname(__DIR__) . '/lib/bootstrap.php';
 require dirname(__DIR__) . '/lib/auth.php';
 require dirname(__DIR__) . '/lib/db.php';
 require dirname(__DIR__) . '/lib/payload.php';
+require dirname(__DIR__) . '/lib/gemini.php';
 require dirname(__DIR__) . '/lib/i18n.php';
 
 $lang = ($_GET['lang'] ?? '') === 'pt' ? 'pt' : (($_GET['lang'] ?? '') === 'es' ? 'es' : null);
@@ -75,6 +76,14 @@ if (!salud_person($pdo, $pid)) {   // sesión de viewer sin persona válida (p. 
 }
 $payload = salud_build_payload($pdo, $pid);
 $isAdmin = ($_SESSION['role'] ?? null) === 'admin';
+// "Pregúntale a la IA": solo si hay clave de Gemini configurada
+$ask = salud_ask_enabled() ? [
+    'url' => 'ask.php' . ($isAdmin ? '?p=' . $pid : ''),
+    'csrf' => salud_csrf_token(),
+    'history' => salud_ask_history($pdo, $pid, 5),
+    'left' => max(0, SALUD_ASK_DAILY_LIMIT - salud_ask_today($pdo, $pid)),
+    'max' => SALUD_ASK_MAX_CHARS,
+] : null;
 ?>
 <!doctype html>
 <html lang="<?= e($langAttr) ?>">
@@ -95,6 +104,7 @@ window.SALUD = {
   data: <?= json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>,
   i18n: <?= json_encode(SALUD_I18N, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>,
   lang: <?= json_encode($lang, JSON_UNESCAPED_UNICODE) ?>,
+  ask: <?= json_encode($ask, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>,
   links: { logout: '?logout=1', print: true<?= $isAdmin ? ", backend: '../backend/?p=" . $pid . "'" : '' ?> }
 };
 </script>

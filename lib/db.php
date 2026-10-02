@@ -71,6 +71,17 @@ function salud_migrate_multiuser(PDO $pdo): void {
         published_json TEXT,
         published_at TEXT
     )");
+    // preguntas libres a la IA (sección "Pregúntale a la IA" de /salud): historial y límite diario
+    $pdo->exec("CREATE TABLE IF NOT EXISTS ai_questions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        person_id INTEGER NOT NULL,
+        asked_at TEXT NOT NULL,
+        question TEXT NOT NULL,
+        answer TEXT NOT NULL,
+        lang TEXT,
+        model TEXT
+    )");
+    $pdo->exec('CREATE INDEX IF NOT EXISTS ai_questions_person ON ai_questions (person_id, asked_at)');
 
     $cols = array_column($pdo->query('PRAGMA table_info(exams)')->fetchAll(PDO::FETCH_ASSOC), 'name');
     if (in_array('person_id', $cols, true)) return;
@@ -195,6 +206,43 @@ function salud_wipe_dummy(PDO $pdo): void {
     $pdo->exec("INSERT OR REPLACE INTO meta (k, v) VALUES ('dummy_wiped', '1')");
 }
 
+// ---------- ajustes (claves de IA) ----------
+// Se pegan en el backend (tarjeta "Claves de IA") y viven en la tabla meta con prefijo
+// "setting_". Tienen prioridad sobre las constantes de data/config.php, que siguen
+// funcionando como respaldo.
+
+function salud_setting(string $k): ?string {
+    $st = salud_db()->prepare('SELECT v FROM meta WHERE k = ?');
+    $st->execute(['setting_' . $k]);
+    $v = $st->fetchColumn();
+    return ($v === false || $v === '') ? null : (string)$v;
+}
+
+function salud_setting_set(string $k, ?string $v): void {
+    $pdo = salud_db();
+    if ($v === null || $v === '') {
+        $pdo->prepare('DELETE FROM meta WHERE k = ?')->execute(['setting_' . $k]);
+        return;
+    }
+    $pdo->prepare('INSERT INTO meta (k, v) VALUES (?, ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v')
+        ->execute(['setting_' . $k, $v]);
+}
+
+function salud_gemini_key(): string { return salud_setting('gemini_api_key') ?? GEMINI_API_KEY; }
+function salud_gemini_model(): string { return salud_setting('gemini_model') ?? GEMINI_MODEL; }
+function salud_anthropic_key(): string { return salud_setting('anthropic_api_key') ?? ANTHROPIC_API_KEY; }
+// Búsqueda web de Google para que la IA lea la etiqueta de un producto concreto (activada por defecto)
+// Si Google responde que no hay cupo, salud_ask() la pausa unas horas (ask_search_off_until).
+function salud_ask_search(): bool {
+    if ((salud_setting('ask_search') ?? '1') !== '1') return false;
+    return (int)(salud_setting('ask_search_off_until') ?? 0) < time();
+}
+
+// Para mostrar una clave sin revelarla: solo los últimos 4 caracteres.
+function salud_mask_key(string $k): string {
+    return $k === '' ? '' : '••••' . substr($k, -4);
+}
+
 // ---------- personas ----------
 
 function salud_people(PDO $pdo): array {
@@ -267,6 +315,7 @@ function salud_person_delete(PDO $pdo, int $id): void {
     $pdo->prepare('DELETE FROM exams WHERE person_id = ?')->execute([$id]);
     $pdo->prepare('DELETE FROM health_monthly WHERE person_id = ?')->execute([$id]);
     $pdo->prepare('DELETE FROM summaries WHERE person_id = ?')->execute([$id]);
+    $pdo->prepare('DELETE FROM ai_questions WHERE person_id = ?')->execute([$id]);
     $pdo->prepare('DELETE FROM people WHERE id = ?')->execute([$id]);
     $pdo->commit();
     foreach ($files as $f) @unlink(SALUD_DATA_DIR . '/pdfs/' . basename((string)$f));

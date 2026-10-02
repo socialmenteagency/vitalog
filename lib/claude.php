@@ -13,8 +13,8 @@ const SALUD_CLAUDE_MAX_PDF_MB = 30;
 //         'results' => [['code' => string|null, 'name_raw' => string,
 //                        'value' => float, 'unit_raw' => string], ...]]
 function salud_extract_pdf(string $pdfPath): array {
-    if (ANTHROPIC_API_KEY === '') {
-        return ['ok' => false, 'error' => 'Falta ANTHROPIC_API_KEY en data/config.php.'];
+    if (salud_anthropic_key() === '') {
+        return ['ok' => false, 'error' => 'Falta la clave de Claude: pégala en el backend, tarjeta «Claves de IA».'];
     }
     $size = filesize($pdfPath);
     if ($size === false || $size > SALUD_CLAUDE_MAX_PDF_MB * 1024 * 1024) {
@@ -75,7 +75,7 @@ PROMPT;
         CURLOPT_POSTFIELDS => json_encode($body),
         CURLOPT_HTTPHEADER => [
             'Content-Type: application/json',
-            'x-api-key: ' . ANTHROPIC_API_KEY,
+            'x-api-key: ' . salud_anthropic_key(),
             'anthropic-version: 2023-06-01',
         ],
         CURLOPT_RETURNTRANSFER => true,
