@@ -20,6 +20,9 @@ $lang = ($_POST['lang'] ?? '') === 'pt' ? 'pt' : 'es';
 $pt = $lang === 'pt';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') ask_out(405, ['error' => 'Método no permitido.']);
+if (SALUD_DEMO_MODE) ask_out(403, ['error' => $pt
+    ? 'Esta é uma demonstração: não dá para fazer perguntas novas.'
+    : 'Esto es una demo: no se pueden hacer preguntas nuevas.']);
 if (!salud_has_role('viewer')) ask_out(401, ['error' => $pt ? 'Sua sessão expirou. Recarregue a página.' : 'Tu sesión expiró. Recarga la página.']);
 $sent = (string)($_POST['csrf'] ?? '');
 if (empty($_SESSION['csrf']) || !hash_equals($_SESSION['csrf'], $sent)) {

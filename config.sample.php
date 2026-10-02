@@ -34,3 +34,7 @@ define('ANTHROPIC_API_KEY', '');
 // Con true, si la base está vacía se cargan datos de ejemplo para ver el diseño.
 // El backend tiene un botón para eliminarlos cuando empieces a cargar datos reales.
 define('SEED_DUMMY', true);
+
+// Only for a public demo site (NOT for your real install): when true, everybody is signed in
+// without a password, nothing is saved, no files are uploaded and no AI is called.
+// define('SALUD_DEMO_MODE', true);

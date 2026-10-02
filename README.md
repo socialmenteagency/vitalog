@@ -6,6 +6,7 @@ no build step, runs on cheap shared hosting. The interface is in Spanish and Bra
 Portuguese (toggle in the page).
 
 **[Live demo](https://socialmente.agency/vitalog/demo/)** (made-up data) ·
+**[Admin panel demo](https://socialmente.agency/vitalog/demo/backend/)** (open, nothing is saved) ·
 **[Website](https://socialmente.agency/vitalog/)** ·
 **[Step-by-step install guide for non-technical people](https://socialmente.agency/vitalog/instalar/)** (Spanish)
 

@@ -23,6 +23,9 @@ if (is_file(SALUD_DATA_DIR . '/config.php')) {
 }
 
 if (!defined('SEED_DUMMY')) define('SEED_DUMMY', true);
+// Modo demo (solo para un sitio público de demostración): entra sin contraseña, no guarda nada,
+// no sube archivos y no llama a ninguna IA. En una instalación real no se define.
+if (!defined('SALUD_DEMO_MODE')) define('SALUD_DEMO_MODE', false);
 if (!defined('ANTHROPIC_API_KEY')) define('ANTHROPIC_API_KEY', '');
 // Resumen y recomendaciones con IA (Gemini). Usar una key de cuenta de pago: el tier
 // gratuito de Google puede usar los datos enviados para mejorar sus productos.
@@ -45,6 +48,14 @@ if (PHP_SAPI !== 'cli') {
         'secure'   => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
     ]);
     session_start();
+    if (SALUD_DEMO_MODE) {
+        header('X-Robots-Tag: noindex, nofollow');
+        if (empty($_SESSION['role'])) {
+            $_SESSION['role'] = 'admin';
+            $_SESSION['person_id'] = null;
+            $_SESSION['login_at'] = time();
+        }
+    }
 }
 
 function e(?string $s): string {

@@ -91,6 +91,9 @@ nav.people a.on{background:var(--accentd);border-color:var(--accentd);color:#fff
 </style>
 </head>
 <body><div class="wrap">
+<?php if (SALUD_DEMO_MODE): ?>
+<p class="msg" role="note"><strong>Demo del backend</strong> · datos inventados; puedes mirar todo, pero los botones no guardan nada, no suben archivos y la IA está desactivada. <a href="https://socialmente.agency/vitalog/instalar/" style="color:inherit">Cómo instalarlo</a> · <a href="https://socialmente.agency/vitalog/" style="color:inherit">Volver a Vitalog</a> · <em>Demo of the admin panel: sample data, nothing is saved.</em></p>
+<?php endif; ?>
 <?php }
 
 function b_layout_bottom(): void { echo '</div></body></html>'; }
@@ -144,6 +147,7 @@ function b_pdf_dir(): string {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'login') {
+    if (SALUD_DEMO_MODE) b_redirect('Esto es una demo: no se guarda nada, no se suben archivos y la IA está desactivada. En tu instalación estos botones funcionan.');
     salud_csrf_check();
     $action = $_POST['action'] ?? '';
 
