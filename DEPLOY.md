@@ -53,11 +53,21 @@ deploy). It must sit at the root of the cloned repository.
 ## Security: what it covers and what it does not
 
 - `data/` and `lib/` are blocked from the web; PDFs are only served through an admin session.
-- Login rate limit: 8 failed attempts / 15 min per IP, plus a 1 s penalty.
-- Session cookies are `HttpOnly`, `SameSite=Lax`, and `Secure` over HTTPS.
-- Per-person viewer passwords are stored hashed in the database. The admin password lives
-  **in plain text** in `data/config.php`, and the API keys are plain text too (in the database
-  when pasted in the backend, or in `data/config.php`). Whoever can read your server files can read them: the hosting account is the real
-  perimeter. Do not reuse passwords from other services.
-- This is a personal/family tool, not a multi-tenant service. Do not host other people's health
-  data without doing your own privacy and legal review (see the disclaimer in the README).
+- **XSS:** the boot data of `/salud` is a `<script type="application/json">` block encoded with `JSON_HEX_*`, so stored text can never close it, and a **Content-Security-Policy** (`default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'`) forbids inline scripts and third-party origins. That is why there are no inline handlers (the backend uses `backend/backend.js` with `data-confirm` / `data-busy`) and fonts are self-hosted in `salud/assets/fonts/`. Anything you add (a script, an external image) must be served from your own site.
+- **Headers** (`lib/bootstrap.php`): CSP, `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy: no-referrer`, `Permissions-Policy`, COOP; no `X-Powered-By`.
+- **HTTPS:** `http://` is redirected (301) to `https://` and HSTS is sent (1 year, no subdomains). HTTPS is detected behind Cloudflare too. Turn it off with `define('SALUD_FORCE_HTTPS', false)` in `data/config.php` (it never acts on localhost). Browsers remember HSTS: if your domain loses its certificate, the page will stop opening.
+- **Login rate limit** (`lib/auth.php`, file lock; the attempt is recorded BEFORE the password is checked): 8 failures / 15 min per IP, 10 for the backend password across all IPs and 60 overall. A correct login gives its attempt back. **If you lock yourself out**, wait 15 minutes or delete `data/login_attempts.json` in the File Manager. New person passwords need 12+ characters.
+- **Sessions:** no session cookie is created for anonymous visits; admin sessions expire after 2 h idle or 12 h total, people after 12 h idle or 30 days. Cookies are `HttpOnly`, `SameSite=Lax`, and `Secure` over HTTPS.
+- **Upload limits:** Apple Health zip ≤ 4 GB inflated (read in 32 KB chunks), imported JSON ≤ 8 MB, PDFs must start with `%PDF-`.
+- **HTTP basic auth on `/backend` (optional, recommended).** It contains a `/salud` XSS or a leaked person password by putting the admin behind a second secret no viewer has. In `backend/.htaccess`:
+
+```apache
+AuthType Basic
+AuthName "Vitalog backend"
+AuthUserFile /home/ACCOUNT/.htpasswds/vitalog
+Require valid-user
+```
+
+  Keep the password file OUTSIDE `public_html` and create it on your computer with `htpasswd -nbB -C 12 user 'a-long-password'`.
+- Per-person viewer passwords are stored hashed. The admin password lives **in plain text** in `data/config.php` unless you set `BACKEND_PASSWORD_HASH` (see `config.sample.php`); API keys are plain text too (in the database when pasted in the backend, or in `data/config.php`). Whoever can read your server files can read them: the hosting account is the real perimeter. Do not reuse passwords from other services.
+- This is a personal/family tool, not a multi-tenant service. Do not host other people's health data without doing your own privacy and legal review (see the disclaimer in the README).
