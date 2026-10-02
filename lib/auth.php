@@ -5,8 +5,10 @@
 
 declare(strict_types=1);
 
-const SALUD_MAX_FAILS = 8;
-const SALUD_FAIL_WINDOW = 900; // segundos
+const SALUD_MAX_FAILS = 8;          // intentos fallidos por IP
+const SALUD_MAX_FAILS_ADMIN = 10;   // contraseña del backend, sumando todas las IP
+const SALUD_MAX_FAILS_GLOBAL = 60;  // todos los intentos fallidos de todas las IP
+const SALUD_FAIL_WINDOW = 900;      // segundos (15 min)
 
 function salud_client_ip(): string {
     return $_SERVER['REMOTE_ADDR'] ?? 'cli';
@@ -16,60 +18,112 @@ function salud_attempts_file(): string {
     return SALUD_DATA_DIR . '/login_attempts.json';
 }
 
-function salud_login_blocked(): bool {
-    $file = salud_attempts_file();
-    if (!is_file($file)) return false;
-    $all = json_decode((string)file_get_contents($file), true) ?: [];
-    $rec = $all[salud_client_ip()] ?? null;
-    if (!$rec) return false;
-    if (time() - $rec['first'] > SALUD_FAIL_WINDOW) return false;
-    return $rec['count'] >= SALUD_MAX_FAILS;
-}
-
-function salud_record_attempt(bool $success): void {
-    $file = salud_attempts_file();
+// Limitador de intentos con bloqueo de archivo (flock): cada intento se REGISTRA ANTES de verificar la contraseña,
+// así varias peticiones en paralelo no pueden pasar todas el control. Un acceso correcto devuelve el intento.
+// Estructura: {"ip": {ip: {first, count}}, "admin": {first, count}, "global": {first, count}}.
+function salud_rate_open() {
     if (!is_dir(SALUD_DATA_DIR)) mkdir(SALUD_DATA_DIR, 0755, true);
-    $all = json_decode(is_file($file) ? (string)file_get_contents($file) : '', true) ?: [];
-    $ip = salud_client_ip();
-    if ($success) {
-        unset($all[$ip]);
-    } else {
-        $rec = $all[$ip] ?? ['first' => time(), 'count' => 0];
-        if (time() - $rec['first'] > SALUD_FAIL_WINDOW) $rec = ['first' => time(), 'count' => 0];
-        $rec['count']++;
-        $all[$ip] = $rec;
-    }
-    // limpiar registros viejos
-    foreach ($all as $k => $rec) {
-        if (time() - $rec['first'] > SALUD_FAIL_WINDOW * 2) unset($all[$k]);
-    }
-    file_put_contents($file, json_encode($all), LOCK_EX);
+    $fh = fopen(salud_attempts_file(), 'c+');
+    if ($fh) flock($fh, LOCK_EX);
+    return $fh;
 }
 
-// Login: 'admin' = contraseña única del backend (config); 'viewer' = la contraseña
-// propia de una persona (cada una ve solo sus datos). Las contraseñas de las personas
-// se guardan con hash en la tabla people y se cambian desde el backend.
+function salud_rate_read($fh): array {
+    rewind($fh);
+    $all = json_decode((string)stream_get_contents($fh), true);
+    $all = is_array($all) && isset($all['ip']) ? $all : ['ip' => [], 'admin' => null, 'global' => null];
+    $now = time();
+    foreach ($all['ip'] as $k => $rec) {
+        if ($now - ($rec['first'] ?? 0) > SALUD_FAIL_WINDOW) unset($all['ip'][$k]);
+    }
+    foreach (['admin', 'global'] as $k) {
+        if ($all[$k] && $now - ($all[$k]['first'] ?? 0) > SALUD_FAIL_WINDOW) $all[$k] = null;
+    }
+    return $all;
+}
+
+function salud_rate_write($fh, array $all): void {
+    ftruncate($fh, 0);
+    rewind($fh);
+    fwrite($fh, json_encode($all));
+    fflush($fh);
+}
+
+function salud_rate_count(?array $rec): int { return $rec ? (int)$rec['count'] : 0; }
+
+function salud_rate_over(array $all, string $role): bool {
+    return salud_rate_count($all['ip'][salud_client_ip()] ?? null) >= SALUD_MAX_FAILS
+        || salud_rate_count($all['global']) >= SALUD_MAX_FAILS_GLOBAL
+        || ($role === 'admin' && salud_rate_count($all['admin']) >= SALUD_MAX_FAILS_ADMIN);
+}
+
+function salud_login_blocked(string $role = 'viewer'): bool {
+    $fh = salud_rate_open();
+    if (!$fh) return false;
+    $blocked = salud_rate_over(salud_rate_read($fh), $role);
+    flock($fh, LOCK_UN);
+    fclose($fh);
+    return $blocked;
+}
+
+// Reserva un intento. Devuelve false (sin reservar) si ya se superó algún límite.
+function salud_rate_reserve(string $role): bool {
+    $fh = salud_rate_open();
+    if (!$fh) return true;   // sin disco no hay límite: mejor que bloquear a todos
+    $all = salud_rate_read($fh);
+    if (salud_rate_over($all, $role)) { flock($fh, LOCK_UN); fclose($fh); return false; }
+    $now = time();
+    $ip = salud_client_ip();
+    $keys = $role === 'admin' ? ['admin', 'global'] : ['global'];
+    $all['ip'][$ip] = ['first' => $all['ip'][$ip]['first'] ?? $now, 'count' => salud_rate_count($all['ip'][$ip] ?? null) + 1];
+    foreach ($keys as $k) $all[$k] = ['first' => $all[$k]['first'] ?? $now, 'count' => salud_rate_count($all[$k]) + 1];
+    salud_rate_write($fh, $all);
+    flock($fh, LOCK_UN);
+    fclose($fh);
+    return true;
+}
+
+function salud_rate_refund(string $role): void {
+    $fh = salud_rate_open();
+    if (!$fh) return;
+    $all = salud_rate_read($fh);
+    unset($all['ip'][salud_client_ip()]);
+    foreach ($role === 'admin' ? ['admin', 'global'] : ['global'] as $k) {
+        if ($all[$k]) {
+            $all[$k]['count'] = max(0, $all[$k]['count'] - 1);
+            if ($all[$k]['count'] === 0) $all[$k] = null;
+        }
+    }
+    salud_rate_write($fh, $all);
+    flock($fh, LOCK_UN);
+    fclose($fh);
+}
+
+// Login: 'admin' = contraseña única del backend (config; BACKEND_PASSWORD_HASH, un password_hash(), tiene prioridad
+// si existe); 'viewer' = la contraseña propia de una persona (cada una ve solo sus datos). Las contraseñas de las
+// personas se guardan con hash en la tabla people y se cambian desde el backend.
 function salud_try_login(string $password, string $role): bool {
-    if (salud_login_blocked()) return false;
+    if (!salud_rate_reserve($role)) return false;
     $personId = null;
     if ($role === 'admin') {
-        $ok = hash_equals(BACKEND_PASSWORD, $password);
+        $ok = defined('BACKEND_PASSWORD_HASH') && BACKEND_PASSWORD_HASH !== ''
+            ? password_verify($password, BACKEND_PASSWORD_HASH)
+            : hash_equals(BACKEND_PASSWORD, $password);
     } else {
         $personId = salud_find_person_by_password(salud_db(), $password);
         $ok = $personId !== null;
     }
     if (!$ok) {
-        // segundo de castigo: los ataques por fuerza bruta se vuelven inviables
-        sleep(1);
+        usleep(250000);   // frena un poco; el tope real lo pone el limitador, que no retiene el servidor
+        return false;
     }
-    salud_record_attempt($ok);
-    if ($ok) {
-        session_regenerate_id(true);
-        $_SESSION['role'] = $role === 'admin' ? 'admin' : 'viewer';
-        $_SESSION['person_id'] = $personId;
-        $_SESSION['login_at'] = time();
-    }
-    return $ok;
+    salud_rate_refund($role);
+    session_regenerate_id(true);
+    $_SESSION['role'] = $role === 'admin' ? 'admin' : 'viewer';
+    $_SESSION['person_id'] = $personId;
+    $_SESSION['login_at'] = time();
+    $_SESSION['last'] = time();
+    return true;
 }
 
 // Persona cuyos datos se muestran: el viewer, la suya; el admin, la pedida en ?p=
@@ -89,6 +143,7 @@ function salud_has_role(string $role): bool {
 }
 
 function salud_logout(): void {
+    if (session_status() !== PHP_SESSION_ACTIVE) return;
     $_SESSION = [];
     if (ini_get('session.use_cookies')) {
         $p = session_get_cookie_params();

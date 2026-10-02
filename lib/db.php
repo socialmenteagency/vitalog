@@ -278,7 +278,7 @@ function salud_person_save(PDO $pdo, ?int $id, array $f): array {
     }
     $password = (string)($f['password'] ?? '');
     if ($password !== '') {
-        if (mb_strlen($password) < 8) return ['error' => 'La contraseña debe tener al menos 8 caracteres.'];
+        if (mb_strlen($password) < 12) return ['error' => 'La contraseña debe tener al menos 12 caracteres.'];
         $other = salud_find_person_by_password($pdo, $password);
         if ($other !== null && $other !== $id) return ['error' => 'Esa contraseña ya la usa otra persona: elige una distinta.'];
     } elseif ($id === null) {

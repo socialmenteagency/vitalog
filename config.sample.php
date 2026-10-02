@@ -35,6 +35,15 @@ define('ANTHROPIC_API_KEY', '');
 // El backend tiene un botón para eliminarlos cuando empieces a cargar datos reales.
 define('SEED_DUMMY', true);
 
+// Optional: store the backend password as a hash instead of plain text. Generate it with
+//   php -r "echo password_hash('your-long-password', PASSWORD_DEFAULT), PHP_EOL;"
+// and paste it here; when set, BACKEND_PASSWORD is ignored.
+// define('BACKEND_PASSWORD_HASH', '$2y$10$...');
+
+// HTTPS: by default any http:// visit is redirected to https:// and HSTS is sent (except on localhost).
+// Set false only if your server has no certificate (for example a test on your local network).
+// define('SALUD_FORCE_HTTPS', false);
+
 // Only for a public demo site (NOT for your real install): when true, everybody is signed in
 // without a password, nothing is saved, no files are uploaded and no AI is called.
 // define('SALUD_DEMO_MODE', true);

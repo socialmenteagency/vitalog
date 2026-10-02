@@ -13,7 +13,8 @@
   'use strict';
 
   const STATE = { lang: 'es', detail: null, filter: '' };
-  const S = window.SALUD;
+  const boot = document.getElementById('salud-boot');   // servidor: bloque JSON; la demo estática define window.SALUD
+  const S = window.SALUD || (window.SALUD = JSON.parse(boot.textContent));
   const D = S.data;
 
   // ---------- utilidades ----------

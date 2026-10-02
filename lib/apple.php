@@ -10,6 +10,10 @@
 declare(strict_types=1);
 
 const SALUD_APPLE_TYPES = ['BodyMass', 'AppleExerciseTime', 'RestingHeartRate', 'StepCount'];
+// Topes contra un zip malicioso (bomba de descompresión): export.xml descomprimido y largo de una línea.
+const SALUD_APPLE_MAX_INFLATED = 4 * 1024 * 1024 * 1024;
+const SALUD_APPLE_MAX_LINE = 64 * 1024 * 1024;
+const SALUD_JSON_MAX_BYTES = 8 * 1024 * 1024;
 
 // Ubica export.xml dentro del zip: [offset de los datos, tamaño comprimido, método].
 function salud_apple_zip_find(string $path): array {
@@ -87,15 +91,22 @@ function salud_apple_parse_zip(string $path): array {
         $ctx = $method === 8 ? inflate_init(ZLIB_ENCODING_RAW) : null;
         $left = $csize;
         $carry = '';
+        $inflated = 0;
         while ($left > 0) {
             $chunk = fread($fh, min(262144, $left));
             if ($chunk === false || $chunk === '') break;
             $left -= strlen($chunk);
             $data = $ctx ? inflate_add($ctx, $chunk) : $chunk;
             if ($data === false) throw new RuntimeException('El zip está dañado (no se pudo descomprimir).');
+            $inflated += strlen($data);
+            if ($inflated > SALUD_APPLE_MAX_INFLATED) throw new RuntimeException('export.xml descomprimido es demasiado grande (más de 4 GB).');
             $buf = $carry . $data;
             $cut = strrpos($buf, "\n");
-            if ($cut === false) { $carry = $buf; continue; }
+            if ($cut === false) {
+                if (strlen($buf) > SALUD_APPLE_MAX_LINE) throw new RuntimeException('El archivo no tiene el formato de un export de Apple Health.');
+                $carry = $buf;
+                continue;
+            }
             $carry = substr($buf, $cut + 1);
             salud_apple_scan(substr($buf, 0, $cut), $acc);
         }
@@ -130,6 +141,7 @@ function salud_apple_parse_zip(string $path): array {
 function salud_apple_months_from_upload(string $tmpPath): array {
     $magic = (string)file_get_contents($tmpPath, false, null, 0, 2);
     if ($magic === 'PK') return salud_apple_parse_zip($tmpPath);
+    if (filesize($tmpPath) > SALUD_JSON_MAX_BYTES) throw new RuntimeException('El JSON es demasiado grande (máximo 8 MB).');
     $data = json_decode((string)file_get_contents($tmpPath), true);
     $months = is_array($data) ? ($data['months'] ?? null) : null;
     if (!is_array($months)) {

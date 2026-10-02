@@ -40,13 +40,11 @@ if (!salud_has_role('viewer')): ?>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title><?= e($t['login_title']) ?></title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/fonts.css?v=1">
 <link rel="stylesheet" href="assets/styles.css?v=<?= $cssV ?>">
 </head>
 <body class="login-body">
@@ -96,26 +94,27 @@ $ask = salud_ask_enabled() ? [
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title><?= e($t['title']) ?> — <?= e($payload['patient']['name']) ?></title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/fonts.css?v=1">
 <link rel="stylesheet" href="assets/styles.css?v=<?= $cssV ?>">
 </head>
 <body>
 <div id="app" class="app"></div>
-<script>
-window.SALUD = {
-  data: <?= json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>,
-  i18n: <?= json_encode(SALUD_I18N, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>,
-  lang: <?= json_encode($lang, JSON_UNESCAPED_UNICODE) ?>,
-  ask: <?= json_encode($ask, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>,
-  links: { logout: '?logout=1', print: true<?= $isAdmin ? ", backend: '../backend/?p=" . $pid . "'" : '' ?> }
-};
-</script>
+<?php
+// Datos de arranque como bloque JSON (no se ejecuta, así que la CSP no necesita 'unsafe-inline' para scripts).
+// JSON_HEX_* escapa < > & ' " : un "</script>" guardado en una pregunta o respuesta jamás puede cerrar el bloque.
+$boot = [
+    'data' => $payload,
+    'i18n' => SALUD_I18N,
+    'lang' => $lang,
+    'ask'  => $ask,
+    'links' => ['logout' => '?logout=1', 'print' => true] + ($isAdmin ? ['backend' => '../backend/?p=' . $pid] : []),
+];
+?>
+<script type="application/json" id="salud-boot"><?= json_encode($boot, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_INVALID_UTF8_SUBSTITUTE) ?></script>
 <script src="assets/app.js?v=<?= $jsV ?>"></script>
 </body>
 </html>

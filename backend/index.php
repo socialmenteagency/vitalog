@@ -21,7 +21,7 @@ if (isset($_GET['logout'])) { salud_logout(); header('Location: ./'); exit; }
 
 $loginError = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'login') {
-    if (salud_login_blocked()) {
+    if (salud_login_blocked('admin')) {
         $loginError = 'Demasiados intentos. Espera 15 minutos.';
     } elseif (salud_try_login((string)($_POST['password'] ?? ''), 'admin')) {
         header('Location: ./'); exit;
@@ -38,13 +38,11 @@ function b_layout_top(string $title): void { ?>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title><?= e($title) ?> — backend salud</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="icon" href="../salud/assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="../salud/assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="../salud/assets/favicon-32.png">
 <link rel="apple-touch-icon" href="../salud/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../salud/assets/fonts.css?v=1">
 <style>
 :root{--paper:#F7F9F8;--surface:#fff;--ink:#172523;--ink2:#546360;--ink3:#8AA09B;
 --line:#E2EAE7;--accent:#0D9488;--accentd:#0B6E63;--bad:#B91C1C;--badw:#FBECEC;
@@ -93,6 +91,7 @@ nav.people a.on{background:var(--accentd);border-color:var(--accentd);color:#fff
 .draft ol,.draft ul{padding-left:20px;margin-top:8px}.draft li{margin-bottom:5px}
 @media(max-width:640px){.top{flex-direction:column;align-items:flex-start}}
 </style>
+<script src="backend.js" defer></script>
 </head>
 <body><div class="wrap">
 <?php if (SALUD_DEMO_MODE): ?>
@@ -159,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'login
         $f = $_FILES['pdf'] ?? null;
         if (!$f || $f['error'] !== UPLOAD_ERR_OK) b_redirect(null, 'No se pudo subir el archivo (¿supera el límite del servidor?).');
         $mime = mime_content_type($f['tmp_name']);
-        if ($mime !== 'application/pdf') b_redirect(null, 'El archivo tiene que ser un PDF.');
+        if ($mime !== 'application/pdf' || file_get_contents($f['tmp_name'], false, null, 0, 5) !== '%PDF-') b_redirect(null, 'El archivo tiene que ser un PDF.');
         $tmp = b_pdf_dir() . '/pending_' . session_id() . '.pdf';
         move_uploaded_file($f['tmp_name'], $tmp);
         $res = salud_extract_pdf($tmp);
@@ -245,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'login
             b_redirect(null, 'El archivo supera el límite de subida del servidor (' . ini_get('upload_max_filesize') . ').');
         }
         if (!$f || $f['error'] !== UPLOAD_ERR_OK) b_redirect(null, 'No se pudo subir el archivo.');
-        set_time_limit(0);        // export.xml pesa cientos de MB: puede tardar unos segundos
+        set_time_limit(900);      // export.xml pesa cientos de MB: puede tardar unos segundos (tope 15 min)
         ignore_user_abort(true);
         try {
             $months = salud_apple_months_from_upload($f['tmp_name']);
@@ -321,6 +320,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'login
     if ($action === 'import_exams') {
         $f = $_FILES['json'] ?? null;
         if (!$f || $f['error'] !== UPLOAD_ERR_OK) b_redirect(null, 'No se pudo subir el archivo JSON.');
+        if (filesize($f['tmp_name']) > SALUD_JSON_MAX_BYTES) b_redirect(null, 'El JSON es demasiado grande (máximo 8 MB).');
         $data = json_decode((string)file_get_contents($f['tmp_name']), true);
         if (!is_array($data) || !isset($data['exams'])) {
             b_redirect(null, 'El JSON no tiene el formato esperado: {"exams":[{"date":"YYYY-MM-DD","lab":"...","results":{"hdl":55}}]}.');
@@ -347,6 +347,7 @@ if (isset($_GET['pdf'])) {
     $row = $st->fetch(PDO::FETCH_ASSOC);
     $path = $row && $row['pdf_file'] ? b_pdf_dir() . '/' . basename($row['pdf_file']) : null;
     if (!$path || !is_file($path)) { http_response_code(404); exit('PDF no encontrado.'); }
+    header_remove('Content-Security-Policy');   // el visor de PDF del navegador no funciona con default-src 'none'
     header('Content-Type: application/pdf');
     header('Content-Disposition: inline; filename="examen_' . $row['date'] . '.pdf"');
     readfile($path);
@@ -501,7 +502,7 @@ b_layout_top('Backend');
 <div class="card" style="border-left:3px solid var(--accent)">
   <strong>La base tiene datos de ejemplo.</strong>
   <p class="hint" style="margin:4px 0 10px">Sirven para ver el diseño de /salud. Cuando quieras cargar tus datos reales, elimínalos.</p>
-  <form method="post" onsubmit="return confirm('¿Eliminar TODOS los datos de ejemplo?')">
+  <form method="post" data-confirm="¿Eliminar TODOS los datos de ejemplo?">
     <input type="hidden" name="action" value="wipe_dummy">
     <input type="hidden" name="p" value="<?= $pid ?>">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
@@ -613,7 +614,7 @@ $keySource = fn(string $setting, string $fromConfig): string => salud_setting($s
       <input id="p-meds" type="text" name="meds" maxlength="500" placeholder="Solo para que la IA lo respete; no da consejos sobre ello" value="<?= e($person['meds'] ?? '') ?>"></div>
     <div class="row" style="margin-top:12px">
       <div><label for="p-pass">Contraseña de /salud</label>
-        <input id="p-pass" type="password" name="password" autocomplete="new-password" minlength="8" placeholder="Vacío = no cambiarla">
+        <input id="p-pass" type="password" name="password" autocomplete="new-password" minlength="12" placeholder="Vacío = no cambiarla">
         <p class="hint">Mínimo 8 caracteres y distinta a la de las demás personas.</p></div>
       <div class="actions" style="align-self:flex-start;padding-top:22px"><button type="submit">Guardar perfil</button></div>
     </div>
@@ -644,7 +645,7 @@ $keySource = fn(string $setting, string $fromConfig): string => salud_setting($s
     </div>
   <?php else: ?><p class="hint">Todavía no hay borrador.</p><?php endif; ?>
   <div class="actions" style="margin-top:14px;justify-content:flex-start;flex-wrap:wrap">
-    <form method="post" class="inline" onsubmit="var b=this.querySelector('button');b.disabled=true;b.textContent='Generando… (hasta 1 minuto)'">
+    <form method="post" class="inline" data-busy="Generando… (hasta 1 minuto)">
       <input type="hidden" name="action" value="gen_summary"><input type="hidden" name="p" value="<?= $pid ?>"><input type="hidden" name="csrf" value="<?= e($csrf) ?>">
       <button type="submit" class="<?= $draft ? 'ghost' : '' ?>"><?= $draft ? 'Generar de nuevo' : 'Generar borrador' ?></button>
     </form>
@@ -671,7 +672,7 @@ $keySource = fn(string $setting, string $fromConfig): string => salud_setting($s
     el servidor calcula los promedios mensuales y puede tardar un minuto. También acepta el JSON de
     <code class="pill">tools/apple_health_to_json.py</code>.
   </p>
-  <form method="post" enctype="multipart/form-data" onsubmit="var b=this.querySelector('button');b.disabled=true;b.textContent='Procesando…'">
+  <form method="post" enctype="multipart/form-data" data-busy="Procesando…">
     <input type="hidden" name="action" value="apple_import">
     <input type="hidden" name="p" value="<?= $pid ?>">
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
@@ -715,7 +716,7 @@ $keySource = fn(string $setting, string $fromConfig): string => salud_setting($s
         <td><?php if ($ex['pdf_file']): ?><a href="?pdf=<?= (int)$ex['id'] ?>" target="_blank" rel="noopener">ver</a><?php else: ?><span class="pill">—</span><?php endif; ?></td>
         <td class="actions">
           <a href="?edit=<?= (int)$ex['id'] ?>" style="font-size:13px">editar</a>
-          <form method="post" class="inline" onsubmit="return confirm('¿Eliminar el examen del <?= e($ex['date']) ?>?')">
+          <form method="post" class="inline" data-confirm="¿Eliminar el examen del <?= e($ex['date']) ?>?">
             <input type="hidden" name="action" value="delete_exam">
             <input type="hidden" name="exam_id" value="<?= (int)$ex['id'] ?>">
             <input type="hidden" name="p" value="<?= $pid ?>">
@@ -738,12 +739,12 @@ $keySource = fn(string $setting, string $fromConfig): string => salud_setting($s
     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <div class="row">
       <div><label for="np-name">Nombre</label><input id="np-name" type="text" name="name" required maxlength="80"></div>
-      <div><label for="np-pass">Contraseña de /salud</label><input id="np-pass" type="password" name="password" required minlength="8" autocomplete="new-password"></div>
+      <div><label for="np-pass">Contraseña de /salud</label><input id="np-pass" type="password" name="password" required minlength="12" autocomplete="new-password"></div>
       <div><button type="submit" class="ghost">Crear</button></div>
     </div>
   </form>
   <?php if ($pid !== 1): ?>
-  <form method="post" style="margin-top:16px;border-top:1px solid var(--line);padding-top:14px" onsubmit="return confirm('¿Eliminar a <?= e($person['name']) ?> y TODOS sus datos? No se puede deshacer.')">
+  <form method="post" style="margin-top:16px;border-top:1px solid var(--line);padding-top:14px" data-confirm="¿Eliminar a <?= e($person['name']) ?> y TODOS sus datos? No se puede deshacer.">
     <input type="hidden" name="action" value="delete_person"><input type="hidden" name="p" value="<?= $pid ?>"><input type="hidden" name="csrf" value="<?= e($csrf) ?>">
     <div class="row">
       <div><label for="dp-name">Eliminar a <?= e($person['name']) ?>: escribe su nombre exacto</label><input id="dp-name" type="text" name="confirm_name" autocomplete="off"></div>
