@@ -40,6 +40,10 @@ function b_layout_top(string $title): void { ?>
 <title><?= e($title) ?> — backend salud</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" href="../salud/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../salud/assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../salud/assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../salud/assets/apple-touch-icon.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
 :root{--paper:#F7F9F8;--surface:#fff;--ink:#172523;--ink2:#546360;--ink3:#8AA09B;
