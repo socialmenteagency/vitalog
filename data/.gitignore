@@ -1,0 +1,4 @@
+# En git solo viajan las protecciones; base, PDFs y config son del servidor.
+*
+!.htaccess
+!.gitignore

@@ -1,0 +1,878 @@
+{
+  "ui": {
+    "es": {
+      "learn_more": "Saber más",
+      "show_less": "Ver menos",
+      "what": "Qué mide",
+      "improve": "Cómo mejorarlo",
+      "disclaimer": "Información educativa general; no es consejo médico ni reemplaza la consulta con tu médico."
+    },
+    "pt": {
+      "learn_more": "Saiba mais",
+      "show_less": "Ver menos",
+      "what": "O que mede",
+      "improve": "Como melhorar",
+      "disclaimer": "Informação educativa geral; não é aconselhamento médico nem substitui a consulta com seu médico."
+    }
+  },
+  "tiers": {
+    "col_total": [
+      { "from": null, "to": 200, "level": "ok", "r": "<200", "es": "Deseable", "pt": "Desejável" },
+      { "from": 200, "to": 240, "level": "warn", "r": "200–239", "es": "Límite alto", "pt": "Limítrofe" },
+      { "from": 240, "to": null, "level": "bad", "r": "≥240", "es": "Alto", "pt": "Alto" }
+    ],
+    "ldl": [
+      { "from": null, "to": 100, "level": "ok", "r": "<100", "es": "Óptimo", "pt": "Ótimo" },
+      { "from": 100, "to": 130, "level": "ok", "r": "100–129", "es": "Casi óptimo", "pt": "Quase ótimo" },
+      { "from": 130, "to": 160, "level": "warn", "r": "130–159", "es": "Límite alto", "pt": "Limítrofe" },
+      { "from": 160, "to": 190, "level": "bad", "r": "160–189", "es": "Alto", "pt": "Alto" },
+      { "from": 190, "to": null, "level": "bad", "r": "≥190", "es": "Muy alto", "pt": "Muito alto" }
+    ],
+    "hdl": [
+      { "from": null, "to": 40, "level": "bad", "r": "<40", "es": "Bajo", "pt": "Baixo" },
+      { "from": 40, "to": 60, "level": "ok", "r": "40–59", "es": "Aceptable", "pt": "Aceitável" },
+      { "from": 60, "to": null, "level": "ok", "r": "≥60", "es": "Protector", "pt": "Protetor" }
+    ],
+    "tg": [
+      { "from": null, "to": 150, "level": "ok", "r": "<150", "es": "Normal", "pt": "Normal" },
+      { "from": 150, "to": 200, "level": "warn", "r": "150–199", "es": "Límite alto", "pt": "Limítrofe" },
+      { "from": 200, "to": 500, "level": "bad", "r": "200–499", "es": "Alto", "pt": "Alto" },
+      { "from": 500, "to": null, "level": "bad", "r": "≥500", "es": "Muy alto", "pt": "Muito alto" }
+    ],
+    "glucemia": [
+      { "from": null, "to": 70, "level": "bad", "r": "<70", "es": "Baja", "pt": "Baixa" },
+      { "from": 70, "to": 100, "level": "ok", "r": "70–99", "es": "Normal", "pt": "Normal" },
+      { "from": 100, "to": 126, "level": "warn", "r": "100–125", "es": "Prediabetes", "pt": "Pré-diabetes" },
+      { "from": 126, "to": null, "level": "bad", "r": "≥126", "es": "Rango de diabetes", "pt": "Faixa de diabetes" }
+    ],
+    "hba1c": [
+      { "from": null, "to": 5.7, "level": "ok", "r": "<5,7", "es": "Normal", "pt": "Normal" },
+      { "from": 5.7, "to": 6.5, "level": "warn", "r": "5,7–6,4", "es": "Prediabetes", "pt": "Pré-diabetes" },
+      { "from": 6.5, "to": null, "level": "bad", "r": "≥6,5", "es": "Rango de diabetes", "pt": "Faixa de diabetes" }
+    ],
+    "ptog_120": [
+      { "from": null, "to": 140, "level": "ok", "r": "<140", "es": "Normal", "pt": "Normal" },
+      { "from": 140, "to": 200, "level": "warn", "r": "140–199", "es": "Prediabetes", "pt": "Pré-diabetes" },
+      { "from": 200, "to": null, "level": "bad", "r": "≥200", "es": "Rango de diabetes", "pt": "Faixa de diabetes" }
+    ],
+    "vitd": [
+      { "from": null, "to": 20, "level": "bad", "r": "<20", "es": "Deficiencia", "pt": "Deficiência" },
+      { "from": 20, "to": 30, "level": "warn", "r": "20–29", "es": "Insuficiencia", "pt": "Insuficiência" },
+      { "from": 30, "to": 100, "level": "ok", "r": "30–100", "es": "Suficiente", "pt": "Suficiente" },
+      { "from": 100, "to": null, "level": "warn", "r": ">100", "es": "Exceso", "pt": "Excesso" }
+    ],
+    "egfr": [
+      { "from": null, "to": 15, "level": "bad", "r": "<15", "es": "Falla renal", "pt": "Falência renal" },
+      { "from": 15, "to": 30, "level": "bad", "r": "15–29", "es": "Muy disminuido", "pt": "Muito reduzido" },
+      { "from": 30, "to": 60, "level": "warn", "r": "30–59", "es": "Moderadamente disminuido", "pt": "Moderadamente reduzido" },
+      { "from": 60, "to": 90, "level": "ok", "r": "60–89", "es": "Levemente disminuido", "pt": "Levemente reduzido" },
+      { "from": 90, "to": null, "level": "ok", "r": "≥90", "es": "Normal", "pt": "Normal" }
+    ]
+  },
+  "info": {
+    "gr": {
+      "es": {
+        "about": "Cantidad de glóbulos rojos, las células que llevan el oxígeno por la sangre.",
+        "more": "Junto con la hemoglobina y el hematocrito muestra si la sangre tiene capacidad suficiente para transportar oxígeno. Valores bajos sugieren anemia; valores altos pueden verse con deshidratación, tabaquismo o vivir en altura.",
+        "tips": ["Hidratarte bien antes del examen", "Dieta con hierro, vitamina B12 y folato", "Si sale fuera de rango, el médico busca la causa"]
+      },
+      "pt": {
+        "about": "Quantidade de hemácias, as células que levam o oxigênio pelo sangue.",
+        "more": "Junto com a hemoglobina e o hematócrito mostra se o sangue tem capacidade suficiente para transportar oxigênio. Valores baixos sugerem anemia; valores altos podem aparecer com desidratação, tabagismo ou vida em altitude.",
+        "tips": ["Hidratar-se bem antes do exame", "Dieta com ferro, vitamina B12 e folato", "Se sair da faixa, o médico investiga a causa"]
+      }
+    },
+    "hb": {
+      "es": {
+        "about": "Proteína de los glóbulos rojos que transporta el oxígeno; es el principal indicador de anemia.",
+        "more": "Si está baja, el cuerpo recibe menos oxígeno y aparecen cansancio y palidez; la causa más común es la falta de hierro. Si está alta, puede deberse a deshidratación, tabaquismo o enfermedades que el médico debe evaluar.",
+        "tips": ["Alimentos ricos en hierro (carnes, legumbres) con vitamina C", "No fumar", "Valores fuera de rango: consulta médica para ver la causa"]
+      },
+      "pt": {
+        "about": "Proteína das hemácias que transporta o oxigênio; é o principal indicador de anemia.",
+        "more": "Se está baixa, o corpo recebe menos oxigênio e surgem cansaço e palidez; a causa mais comum é a falta de ferro. Se está alta, pode ser desidratação, tabagismo ou doenças que o médico deve avaliar.",
+        "tips": ["Alimentos ricos em ferro (carnes, leguminosas) com vitamina C", "Não fumar", "Valores fora da faixa: consulta médica para ver a causa"]
+      }
+    },
+    "hto": {
+      "es": {
+        "about": "Porcentaje de la sangre ocupado por glóbulos rojos.",
+        "more": "Se interpreta junto con la hemoglobina. Baja en anemias y alta con deshidratación o exceso de glóbulos rojos.",
+        "tips": ["Mantener buena hidratación", "Dieta equilibrada con hierro y B12", "No se corrige directamente: depende de la causa"]
+      },
+      "pt": {
+        "about": "Porcentagem do sangue ocupada pelas hemácias.",
+        "more": "Interpreta-se junto com a hemoglobina. Baixo em anemias e alto com desidratação ou excesso de hemácias.",
+        "tips": ["Manter boa hidratação", "Dieta equilibrada com ferro e B12", "Não se corrige diretamente: depende da causa"]
+      }
+    },
+    "vcm": {
+      "es": {
+        "about": "Tamaño promedio de los glóbulos rojos.",
+        "more": "Ayuda a identificar el tipo de anemia: glóbulos pequeños sugieren falta de hierro; grandes, falta de B12 o folato, alcohol o problemas de tiroides o hígado.",
+        "tips": ["Cubrir hierro, B12 y folato en la dieta", "Moderar el alcohol", "Valores alterados: el médico define qué estudiar"]
+      },
+      "pt": {
+        "about": "Tamanho médio das hemácias.",
+        "more": "Ajuda a identificar o tipo de anemia: hemácias pequenas sugerem falta de ferro; grandes, falta de B12 ou folato, álcool ou problemas de tireoide ou fígado.",
+        "tips": ["Garantir ferro, B12 e folato na dieta", "Moderar o álcool", "Valores alterados: o médico define o que investigar"]
+      }
+    },
+    "hcm": {
+      "es": {
+        "about": "Cantidad promedio de hemoglobina dentro de cada glóbulo rojo.",
+        "more": "Acompaña al VCM para clasificar las anemias. Baja cuando falta hierro; alta cuando los glóbulos son grandes.",
+        "tips": ["Dieta con hierro y B12", "No se corrige directamente: depende de la causa"]
+      },
+      "pt": {
+        "about": "Quantidade média de hemoglobina dentro de cada hemácia.",
+        "more": "Acompanha o VCM para classificar as anemias. Baixa quando falta ferro; alta quando as hemácias são grandes.",
+        "tips": ["Dieta com ferro e B12", "Não se corrige diretamente: depende da causa"]
+      }
+    },
+    "chcm": {
+      "es": {
+        "about": "Concentración de hemoglobina dentro de los glóbulos rojos.",
+        "more": "Valores bajos suelen verse en la falta de hierro; los altos son poco frecuentes y pueden ser un artefacto del laboratorio.",
+        "tips": ["Dieta con hierro", "Valores alterados: repetir el examen si el médico lo indica"]
+      },
+      "pt": {
+        "about": "Concentração de hemoglobina dentro das hemácias.",
+        "more": "Valores baixos costumam aparecer na falta de ferro; os altos são pouco frequentes e podem ser um artefato do laboratório.",
+        "tips": ["Dieta com ferro", "Valores alterados: repetir o exame se o médico indicar"]
+      }
+    },
+    "rdw": {
+      "es": {
+        "about": "Variación de tamaño entre los glóbulos rojos.",
+        "more": "Si está alto, hay glóbulos muy desparejos; es una señal temprana de falta de hierro, B12 o folato.",
+        "tips": ["Dieta con hierro, B12 y folato", "Valores altos sostenidos: consulta médica"]
+      },
+      "pt": {
+        "about": "Variação de tamanho entre as hemácias.",
+        "more": "Se está alto, há hemácias muito desiguais; é um sinal precoce de falta de ferro, B12 ou folato.",
+        "tips": ["Dieta com ferro, B12 e folato", "Valores altos mantidos: consulta médica"]
+      }
+    },
+    "gb": {
+      "es": {
+        "about": "Total de glóbulos blancos, las células de defensa del cuerpo.",
+        "more": "Suben ante infecciones, inflamación o estrés, y con el tabaquismo; bajan con algunos virus, medicamentos o problemas de la médula.",
+        "tips": ["No fumar", "Dormir bien y manejar el estrés", "Si persiste fuera de rango, consulta médica"]
+      },
+      "pt": {
+        "about": "Total de leucócitos, as células de defesa do corpo.",
+        "more": "Sobem diante de infecções, inflamação ou estresse, e com o tabagismo; baixam com alguns vírus, medicamentos ou problemas da medula.",
+        "tips": ["Não fumar", "Dormir bem e manejar o estresse", "Se persistir fora da faixa, consulta médica"]
+      }
+    },
+    "neut_pct": {
+      "es": {
+        "about": "Qué porcentaje de los glóbulos blancos son neutrófilos, la primera defensa contra bacterias.",
+        "more": "Un porcentaje alto sugiere infección bacteriana o inflamación; uno bajo, ciertas infecciones virales o medicamentos.",
+        "tips": ["Controlar infecciones e inflamación de base", "No fumar", "Interpretar junto con el valor absoluto"]
+      },
+      "pt": {
+        "about": "Porcentagem dos leucócitos que são neutrófilos, a primeira defesa contra bactérias.",
+        "more": "Uma porcentagem alta sugere infecção bacteriana ou inflamação; uma baixa, certas infecções virais ou medicamentos.",
+        "tips": ["Controlar infecções e inflamação de base", "Não fumar", "Interpretar junto com o valor absoluto"]
+      }
+    },
+    "neut_abs": {
+      "es": {
+        "about": "Cantidad real de neutrófilos en la sangre.",
+        "more": "Es más fiable que el porcentaje para saber si la defensa contra bacterias está adecuada.",
+        "tips": ["Tratar infecciones a tiempo", "No fumar", "Valores bajos: consultar al médico"]
+      },
+      "pt": {
+        "about": "Quantidade real de neutrófilos no sangue.",
+        "more": "É mais confiável que a porcentagem para saber se a defesa contra bactérias está adequada.",
+        "tips": ["Tratar infecções a tempo", "Não fumar", "Valores baixos: consultar o médico"]
+      }
+    },
+    "linf_pct": {
+      "es": {
+        "about": "Porcentaje de los glóbulos blancos que son linfocitos, defensa contra virus.",
+        "more": "Sube con infecciones virales y baja con estrés intenso o algunos medicamentos.",
+        "tips": ["Dormir bien", "Manejar el estrés", "Interpretar junto con el valor absoluto"]
+      },
+      "pt": {
+        "about": "Porcentagem dos leucócitos que são linfócitos, defesa contra vírus.",
+        "more": "Sobe com infecções virais e baixa com estresse intenso ou alguns medicamentos.",
+        "tips": ["Dormir bem", "Manejar o estresse", "Interpretar junto com o valor absoluto"]
+      }
+    },
+    "linf_abs": {
+      "es": {
+        "about": "Cantidad real de linfocitos en la sangre.",
+        "more": "Refleja la defensa contra virus y la memoria inmunológica. Cambia con infecciones recientes, estrés o ciertos fármacos.",
+        "tips": ["Dormir 7–8 horas", "Actividad física regular", "Valores persistentemente alterados: consulta médica"]
+      },
+      "pt": {
+        "about": "Quantidade real de linfócitos no sangue.",
+        "more": "Reflete a defesa contra vírus e a memória imunológica. Muda com infecções recentes, estresse ou certos fármacos.",
+        "tips": ["Dormir 7–8 horas", "Atividade física regular", "Valores persistentemente alterados: consulta médica"]
+      }
+    },
+    "mono_abs": {
+      "es": {
+        "about": "Cantidad de monocitos, células que limpian restos y combaten infecciones.",
+        "more": "Suben en infecciones en recuperación o inflamación crónica.",
+        "tips": ["Controlar procesos inflamatorios", "Valores altos sostenidos: consulta médica"]
+      },
+      "pt": {
+        "about": "Quantidade de monócitos, células que limpam resíduos e combatem infecções.",
+        "more": "Sobem em infecções em recuperação ou inflamação crônica.",
+        "tips": ["Controlar processos inflamatórios", "Valores altos mantidos: consulta médica"]
+      }
+    },
+    "eos_abs": {
+      "es": {
+        "about": "Cantidad de eosinófilos, células ligadas a alergias y parásitos.",
+        "more": "Suben con alergias, asma, eczema o parásitos.",
+        "tips": ["Identificar y evitar alérgenos", "Mantener higiene de alimentos", "Valores altos: consulta médica"]
+      },
+      "pt": {
+        "about": "Quantidade de eosinófilos, células ligadas a alergias e parasitas.",
+        "more": "Sobem com alergias, asma, eczema ou parasitas.",
+        "tips": ["Identificar e evitar alérgenos", "Manter higiene dos alimentos", "Valores altos: consulta médica"]
+      }
+    },
+    "baso_abs": {
+      "es": {
+        "about": "Cantidad de basófilos, las células de glóbulo blanco menos numerosas.",
+        "more": "Participan en reacciones alérgicas. Rara vez dan información por sí solos.",
+        "tips": ["Se interpreta junto con el resto del hemograma", "Valores altos: consulta médica"]
+      },
+      "pt": {
+        "about": "Quantidade de basófilos, os leucócitos menos numerosos.",
+        "more": "Participam de reações alérgicas. Raramente dão informação por si sós.",
+        "tips": ["Interpreta-se junto com o resto do hemograma", "Valores altos: consulta médica"]
+      }
+    },
+    "plaq": {
+      "es": {
+        "about": "Células que ayudan a que la sangre coagule y las heridas cierren.",
+        "more": "Pocas plaquetas aumentan el riesgo de sangrado; muchas pueden verse con inflamación, falta de hierro o infecciones.",
+        "tips": ["Evitar el exceso de alcohol", "Dieta con hierro, B12 y folato", "Valores fuera de rango: consulta médica"]
+      },
+      "pt": {
+        "about": "Células que ajudam o sangue a coagular e as feridas a fechar.",
+        "more": "Poucas plaquetas aumentam o risco de sangramento; muitas podem aparecer com inflamação, falta de ferro ou infecções.",
+        "tips": ["Evitar o excesso de álcool", "Dieta com ferro, B12 e folato", "Valores fora da faixa: consulta médica"]
+      }
+    },
+    "vpm": {
+      "es": {
+        "about": "Tamaño promedio de las plaquetas.",
+        "more": "Plaquetas más grandes suelen ser más jóvenes: indica que la médula está produciéndolas activamente.",
+        "tips": ["No se corrige directamente", "Se interpreta junto con el conteo de plaquetas"]
+      },
+      "pt": {
+        "about": "Tamanho médio das plaquetas.",
+        "more": "Plaquetas maiores costumam ser mais jovens: indica que a medula as está produzindo ativamente.",
+        "tips": ["Não se corrige diretamente", "Interpreta-se junto com a contagem de plaquetas"]
+      }
+    },
+    "vhs": {
+      "es": {
+        "about": "Velocidad con que los glóbulos rojos sedimentan; es un marcador general de inflamación.",
+        "more": "Sube con infecciones, enfermedades inflamatorias y anemia, y aumenta con la edad. Es poco específico: no dice dónde está la inflamación.",
+        "tips": ["Tratar la causa de la inflamación", "Mantener un peso saludable y actividad física", "No fumar"]
+      },
+      "pt": {
+        "about": "Velocidade com que as hemácias sedimentam; é um marcador geral de inflamação.",
+        "more": "Sobe com infecções, doenças inflamatórias e anemia, e aumenta com a idade. É pouco específico: não diz onde está a inflamação.",
+        "tips": ["Tratar a causa da inflamação", "Manter peso saudável e atividade física", "Não fumar"]
+      }
+    },
+    "pcr": {
+      "es": {
+        "about": "Proteína que el hígado produce cuando hay inflamación o infección.",
+        "more": "Sube rápido ante infecciones; valores levemente altos y sostenidos se asocian a inflamación crónica y mayor riesgo cardiovascular.",
+        "tips": ["Actividad física regular", "Bajar el exceso de grasa abdominal", "Dieta con más vegetales y menos ultraprocesados", "No fumar"]
+      },
+      "pt": {
+        "about": "Proteína que o fígado produz quando há inflamação ou infecção.",
+        "more": "Sobe rápido diante de infecções; valores levemente altos e mantidos associam-se a inflamação crônica e maior risco cardiovascular.",
+        "tips": ["Atividade física regular", "Reduzir o excesso de gordura abdominal", "Dieta com mais vegetais e menos ultraprocessados", "Não fumar"]
+      }
+    },
+    "ddimero": {
+      "es": {
+        "about": "Fragmento que aparece cuando se disuelve un coágulo.",
+        "more": "Se usa para descartar trombosis. Es muy sensible: sube con edad, embarazo, cirugías, infecciones o inflamación, por eso un valor alto solo no confirma nada.",
+        "tips": ["Movilizarte con frecuencia en viajes largos", "Hidratarte", "Valores altos: el médico decide si hacen falta más estudios"]
+      },
+      "pt": {
+        "about": "Fragmento que aparece quando um coágulo se dissolve.",
+        "more": "Usa-se para descartar trombose. É muito sensível: sobe com idade, gravidez, cirurgias, infecções ou inflamação, por isso um valor alto sozinho não confirma nada.",
+        "tips": ["Movimentar-se com frequência em viagens longas", "Hidratar-se", "Valores altos: o médico decide se são necessários mais exames"]
+      }
+    },
+    "glucemia": {
+      "es": {
+        "about": "Azúcar en la sangre después de al menos 8 horas de ayuno.",
+        "more": "Es la prueba base para detectar prediabetes y diabetes. Entre 100 y 125 mg/dL se considera prediabetes; desde 126 mg/dL, rango de diabetes (se confirma con un segundo examen).",
+        "tips": ["Reducir azúcares y bebidas azucaradas", "Caminar al menos 30 minutos al día", "Bajar peso si hay sobrepeso", "Dormir bien"]
+      },
+      "pt": {
+        "about": "Açúcar no sangue após pelo menos 8 horas de jejum.",
+        "more": "É o exame base para detectar pré-diabetes e diabetes. Entre 100 e 125 mg/dL considera-se pré-diabetes; a partir de 126 mg/dL, faixa de diabetes (confirma-se com um segundo exame).",
+        "tips": ["Reduzir açúcares e bebidas açucaradas", "Caminhar pelo menos 30 minutos por dia", "Perder peso se houver sobrepeso", "Dormir bem"]
+      }
+    },
+    "hba1c": {
+      "es": {
+        "about": "Promedio del azúcar en sangre de los últimos 2–3 meses.",
+        "more": "Muestra el control del azúcar a largo plazo, sin importar la última comida. Entre 5,7 y 6,4 % es prediabetes; desde 6,5 %, rango de diabetes.",
+        "tips": ["Menos azúcar y harinas refinadas", "Caminar al menos 30 minutos al día", "Más fibra: verduras, legumbres, avena", "Bajar peso si hay sobrepeso"]
+      },
+      "pt": {
+        "about": "Média do açúcar no sangue dos últimos 2–3 meses.",
+        "more": "Mostra o controle do açúcar a longo prazo, independente da última refeição. Entre 5,7 e 6,4 % é pré-diabetes; a partir de 6,5 %, faixa de diabetes.",
+        "tips": ["Menos açúcar e farinhas refinadas", "Caminhar pelo menos 30 minutos por dia", "Mais fibras: verduras, leguminosas, aveia", "Perder peso se houver sobrepeso"]
+      }
+    },
+    "insulina": {
+      "es": {
+        "about": "Hormona que permite que el azúcar entre en las células.",
+        "more": "Una insulina alta en ayunas suele indicar resistencia a la insulina: el cuerpo necesita producir más para controlar el azúcar. Puede ir antes que la glucemia alta.",
+        "tips": ["Actividad física, incluida fuerza", "Reducir azúcares y ultraprocesados", "Bajar peso si hay sobrepeso", "Dormir 7–8 horas"]
+      },
+      "pt": {
+        "about": "Hormônio que permite que o açúcar entre nas células.",
+        "more": "Uma insulina alta em jejum costuma indicar resistência à insulina: o corpo precisa produzir mais para controlar o açúcar. Pode vir antes da glicemia alta.",
+        "tips": ["Atividade física, incluindo força", "Reduzir açúcares e ultraprocessados", "Perder peso se houver sobrepeso", "Dormir 7–8 horas"]
+      }
+    },
+    "ptog_120": {
+      "es": {
+        "about": "Azúcar en sangre 2 horas después de tomar una carga de glucosa.",
+        "more": "Mide cómo responde el cuerpo a una carga de azúcar. Menos de 140 mg/dL es normal; 140–199 mg/dL, prediabetes; desde 200 mg/dL, rango de diabetes.",
+        "tips": ["Menos azúcares y harinas refinadas", "Caminar 10–15 minutos después de comer", "Actividad física regular"]
+      },
+      "pt": {
+        "about": "Açúcar no sangue 2 horas depois de tomar uma carga de glicose.",
+        "more": "Mede como o corpo responde a uma carga de açúcar. Menos de 140 mg/dL é normal; 140–199 mg/dL, pré-diabetes; a partir de 200 mg/dL, faixa de diabetes.",
+        "tips": ["Menos açúcares e farinhas refinadas", "Caminhar 10–15 minutos depois de comer", "Atividade física regular"]
+      }
+    },
+    "ptog_60": {
+      "es": {
+        "about": "Azúcar en sangre 1 hora después de tomar una carga de glucosa.",
+        "more": "Es un punto intermedio de la curva. Valores altos a la hora pueden anticipar problemas de regulación del azúcar aunque a las 2 horas salga normal.",
+        "tips": ["Menos azúcares y harinas refinadas", "Caminar después de las comidas", "Se evalúa junto con la curva completa"]
+      },
+      "pt": {
+        "about": "Açúcar no sangue 1 hora depois de tomar uma carga de glicose.",
+        "more": "É um ponto intermediário da curva. Valores altos na primeira hora podem antecipar problemas de regulação do açúcar mesmo que às 2 horas saia normal.",
+        "tips": ["Menos açúcares e farinhas refinadas", "Caminhar depois das refeições", "Avalia-se junto com a curva completa"]
+      }
+    },
+    "glucosuria": {
+      "es": {
+        "about": "Presencia de azúcar en la orina; normalmente no debería haber.",
+        "more": "Aparece cuando la glucosa en sangre es muy alta o cuando los riñones la dejan pasar. Conviene revisar la glucemia y la hemoglobina glicosilada.",
+        "tips": ["Controlar el azúcar en sangre", "Repetir el examen si el médico lo indica", "Consulta médica si se repite"]
+      },
+      "pt": {
+        "about": "Presença de açúcar na urina; normalmente não deveria haver.",
+        "more": "Aparece quando a glicose no sangue está muito alta ou quando os rins a deixam passar. Convém revisar a glicemia e a hemoglobina glicada.",
+        "tips": ["Controlar o açúcar no sangue", "Repetir o exame se o médico indicar", "Consulta médica se se repetir"]
+      }
+    },
+    "col_total": {
+      "es": {
+        "about": "Suma de todo el colesterol de la sangre (bueno y malo).",
+        "more": "Es un indicador general del riesgo cardiovascular, pero se interpreta mejor con LDL, HDL y triglicéridos. Menos de 200 mg/dL es deseable; 200–239, límite alto; desde 240, alto.",
+        "tips": ["Menos grasas saturadas y trans (fritos, embutidos, bollería)", "Más fibra: avena, legumbres, frutas, verduras", "Caminar al menos 30 minutos al día", "Bajar peso si hay sobrepeso"]
+      },
+      "pt": {
+        "about": "Soma de todo o colesterol do sangue (bom e ruim).",
+        "more": "É um indicador geral do risco cardiovascular, mas interpreta-se melhor com LDL, HDL e triglicerídeos. Menos de 200 mg/dL é desejável; 200–239, limítrofe; a partir de 240, alto.",
+        "tips": ["Menos gorduras saturadas e trans (frituras, embutidos, bolos)", "Mais fibras: aveia, leguminosas, frutas, verduras", "Caminhar pelo menos 30 minutos por dia", "Perder peso se houver sobrepeso"]
+      }
+    },
+    "hdl": {
+      "es": {
+        "about": "El colesterol «bueno»: retira el exceso de colesterol de las arterias.",
+        "more": "A diferencia de los demás, conviene que sea alto. Menos de 40 mg/dL es bajo y aumenta el riesgo cardiovascular; desde 60 mg/dL se considera protector.",
+        "tips": ["Ejercicio aeróbico regular", "Dejar de fumar", "Grasas saludables: aceite de oliva, pescado, frutos secos", "Reducir azúcares y harinas refinadas"]
+      },
+      "pt": {
+        "about": "O colesterol «bom»: retira o excesso de colesterol das artérias.",
+        "more": "Ao contrário dos demais, convém que seja alto. Menos de 40 mg/dL é baixo e aumenta o risco cardiovascular; a partir de 60 mg/dL considera-se protetor.",
+        "tips": ["Exercício aeróbico regular", "Parar de fumar", "Gorduras saudáveis: azeite, peixe, castanhas", "Reduzir açúcares e farinhas refinadas"]
+      }
+    },
+    "ldl": {
+      "es": {
+        "about": "El colesterol «malo»: se acumula en las paredes de las arterias.",
+        "more": "Es el principal objetivo para prevenir infartos y ACV. Menos de 100 mg/dL es óptimo; 130–159, límite alto; 160–189, alto; desde 190, muy alto. La meta ideal depende de tu riesgo total.",
+        "tips": ["Menos grasas saturadas y trans", "Más fibra soluble: avena, legumbres, frutas", "Bajar peso si hay sobrepeso", "Caminar al menos 30 minutos al día"]
+      },
+      "pt": {
+        "about": "O colesterol «ruim»: acumula-se nas paredes das artérias.",
+        "more": "É o principal alvo para prevenir infarto e AVC. Menos de 100 mg/dL é ótimo; 130–159, limítrofe; 160–189, alto; a partir de 190, muito alto. A meta ideal depende do seu risco total.",
+        "tips": ["Menos gorduras saturadas e trans", "Mais fibra solúvel: aveia, leguminosas, frutas", "Perder peso se houver sobrepeso", "Caminhar pelo menos 30 minutos por dia"]
+      }
+    },
+    "no_hdl": {
+      "es": {
+        "about": "Todo el colesterol que no es HDL, es decir, el que puede dañar las arterias.",
+        "more": "Es colesterol total menos HDL. Incluye LDL, VLDL y otras partículas; es útil sobre todo cuando los triglicéridos están altos.",
+        "tips": ["Menos grasas saturadas, trans y azúcares", "Más fibra y pescado", "Actividad física regular", "Bajar peso si hay sobrepeso"]
+      },
+      "pt": {
+        "about": "Todo o colesterol que não é HDL, ou seja, o que pode danificar as artérias.",
+        "more": "É colesterol total menos HDL. Inclui LDL, VLDL e outras partículas; é útil sobretudo quando os triglicerídeos estão altos.",
+        "tips": ["Menos gorduras saturadas, trans e açúcares", "Mais fibras e peixe", "Atividade física regular", "Perder peso se houver sobrepeso"]
+      }
+    },
+    "vldl": {
+      "es": {
+        "about": "Colesterol que viaja en partículas ricas en triglicéridos.",
+        "more": "Normalmente se calcula como triglicéridos ÷ 5, por eso se mueve junto con ellos.",
+        "tips": ["Reducir azúcares, alcohol y harinas refinadas", "Actividad física regular", "Bajar peso si hay sobrepeso"]
+      },
+      "pt": {
+        "about": "Colesterol que viaja em partículas ricas em triglicerídeos.",
+        "more": "Normalmente é calculado como triglicerídeos ÷ 5, por isso se move junto com eles.",
+        "tips": ["Reduzir açúcares, álcool e farinhas refinadas", "Atividade física regular", "Perder peso se houver sobrepeso"]
+      }
+    },
+    "tg": {
+      "es": {
+        "about": "Grasas de la sangre que el cuerpo guarda como reserva de energía.",
+        "more": "Suben con el exceso de azúcar, harinas, alcohol y calorías. Menos de 150 mg/dL es normal; desde 200, alto; desde 500 hay riesgo de pancreatitis.",
+        "tips": ["Reducir azúcares, bebidas azucaradas y alcohol", "Menos harinas refinadas", "Pescado azul 2 veces por semana", "Caminar al menos 30 minutos al día"]
+      },
+      "pt": {
+        "about": "Gorduras do sangue que o corpo guarda como reserva de energia.",
+        "more": "Sobem com o excesso de açúcar, farinhas, álcool e calorias. Menos de 150 mg/dL é normal; a partir de 200, alto; a partir de 500 há risco de pancreatite.",
+        "tips": ["Reduzir açúcares, bebidas açucaradas e álcool", "Menos farinhas refinadas", "Peixe gordo 2 vezes por semana", "Caminhar pelo menos 30 minutos por dia"]
+      }
+    },
+    "indice_col": {
+      "es": {
+        "about": "Relación entre colesterol total y HDL.",
+        "more": "Cuanto más bajo, mejor: indica más colesterol protector en relación con el total. Por encima de 4,5 el riesgo cardiovascular aumenta.",
+        "tips": ["Ejercicio aeróbico regular", "Grasas saludables en vez de saturadas", "Dejar de fumar"]
+      },
+      "pt": {
+        "about": "Relação entre colesterol total e HDL.",
+        "more": "Quanto mais baixo, melhor: indica mais colesterol protetor em relação ao total. Acima de 4,5 o risco cardiovascular aumenta.",
+        "tips": ["Exercício aeróbico regular", "Gorduras saudáveis no lugar das saturadas", "Parar de fumar"]
+      }
+    },
+    "creatinina": {
+      "es": {
+        "about": "Residuo muscular que los riñones filtran; indica cómo funcionan.",
+        "more": "Si sube, los riñones podrían estar filtrando menos. También depende de la masa muscular, la hidratación y la carne o los suplementos de creatina que consumas.",
+        "tips": ["Hidratarte bien", "Evitar antiinflamatorios en exceso", "Controlar presión arterial y azúcar", "Evitar entrenamientos intensos el día previo al examen"]
+      },
+      "pt": {
+        "about": "Resíduo muscular que os rins filtram; indica como funcionam.",
+        "more": "Se sobe, os rins podem estar filtrando menos. Também depende da massa muscular, da hidratação e da carne ou dos suplementos de creatina que você consome.",
+        "tips": ["Hidratar-se bem", "Evitar antiinflamatórios em excesso", "Controlar pressão arterial e açúcar", "Evitar treino intenso no dia anterior ao exame"]
+      }
+    },
+    "egfr": {
+      "es": {
+        "about": "Estimación de cuánta sangre filtran los riñones por minuto.",
+        "more": "Se calcula con la creatinina, la edad y el sexo. Desde 90 es normal; 60–89 es levemente menor y solo importa si hay otros signos de daño; por debajo de 60 se evalúa enfermedad renal.",
+        "tips": ["Controlar presión arterial y azúcar", "Hidratarte bien", "Evitar abuso de antiinflamatorios", "Moderar la sal"]
+      },
+      "pt": {
+        "about": "Estimativa de quanto sangue os rins filtram por minuto.",
+        "more": "Calcula-se com a creatinina, a idade e o sexo. A partir de 90 é normal; 60–89 é levemente menor e só importa se há outros sinais de dano; abaixo de 60 avalia-se doença renal.",
+        "tips": ["Controlar pressão arterial e açúcar", "Hidratar-se bem", "Evitar abuso de antiinflamatórios", "Moderar o sal"]
+      }
+    },
+    "urea": {
+      "es": {
+        "about": "Residuo de las proteínas que los riñones eliminan.",
+        "more": "Sube con deshidratación, mucha proteína en la dieta o menor función renal; baja con poca proteína o enfermedad hepática.",
+        "tips": ["Hidratarte bien", "No excederte con proteínas o suplementos", "Valores altos sostenidos: consulta médica"]
+      },
+      "pt": {
+        "about": "Resíduo das proteínas que os rins eliminam.",
+        "more": "Sobe com desidratação, muita proteína na dieta ou menor função renal; baixa com pouca proteína ou doença hepática.",
+        "tips": ["Hidratar-se bem", "Não exagerar em proteínas ou suplementos", "Valores altos mantidos: consulta médica"]
+      }
+    },
+    "ac_urico": {
+      "es": {
+        "about": "Residuo de las purinas de los alimentos; si se acumula puede causar gota y cálculos.",
+        "more": "Sube con carnes rojas, vísceras, mariscos, alcohol (sobre todo cerveza) y bebidas azucaradas, y con el sobrepeso.",
+        "tips": ["Menos cerveza, alcohol y bebidas azucaradas", "Menos carnes rojas, vísceras y mariscos", "Tomar abundante agua", "Bajar peso gradualmente"]
+      },
+      "pt": {
+        "about": "Resíduo das purinas dos alimentos; se se acumula pode causar gota e cálculos.",
+        "more": "Sobe com carnes vermelhas, vísceras, frutos do mar, álcool (sobretudo cerveja) e bebidas açucaradas, e com o sobrepeso.",
+        "tips": ["Menos cerveja, álcool e bebidas açucaradas", "Menos carnes vermelhas, vísceras e frutos do mar", "Beber bastante água", "Perder peso gradualmente"]
+      }
+    },
+    "na": {
+      "es": {
+        "about": "Mineral que regula el agua del cuerpo y la presión.",
+        "more": "Se mantiene muy estable. Cambios suelen reflejar el balance de agua más que la sal que comes.",
+        "tips": ["Hidratarte de forma adecuada", "Valores fuera de rango: consulta médica pronta"]
+      },
+      "pt": {
+        "about": "Mineral que regula a água do corpo e a pressão.",
+        "more": "Mantém-se muito estável. Mudanças costumam refletir o balanço de água mais do que o sal que você come.",
+        "tips": ["Hidratar-se de forma adequada", "Valores fora da faixa: consulta médica rápida"]
+      }
+    },
+    "k": {
+      "es": {
+        "about": "Mineral esencial para los músculos y el ritmo del corazón.",
+        "more": "Tanto muy alto como muy bajo puede afectar el corazón. Depende de los riñones, ciertos medicamentos y la dieta.",
+        "tips": ["Frutas y verduras variadas (banana, papa, espinaca)", "Cuidado con suplementos y sustitutos de sal", "Valores fuera de rango: consulta médica"]
+      },
+      "pt": {
+        "about": "Mineral essencial para os músculos e o ritmo do coração.",
+        "more": "Tanto muito alto quanto muito baixo pode afetar o coração. Depende dos rins, de certos medicamentos e da dieta.",
+        "tips": ["Frutas e verduras variadas (banana, batata, espinafre)", "Cuidado com suplementos e substitutos do sal", "Valores fora da faixa: consulta médica"]
+      }
+    },
+    "cl": {
+      "es": {
+        "about": "Mineral que acompaña al sodio en el equilibrio de líquidos y ácido-base.",
+        "more": "Casi siempre cambia junto con el sodio. Rara vez da información por sí solo.",
+        "tips": ["Hidratarte adecuadamente", "Valores alterados: consulta médica"]
+      },
+      "pt": {
+        "about": "Mineral que acompanha o sódio no equilíbrio de líquidos e ácido-base.",
+        "more": "Quase sempre muda junto com o sódio. Raramente dá informação por si só.",
+        "tips": ["Hidratar-se adequadamente", "Valores alterados: consulta médica"]
+      }
+    },
+    "magnesio": {
+      "es": {
+        "about": "Mineral clave para músculos, nervios y el ritmo cardíaco.",
+        "more": "Sin rango de referencia aquí porque cada laboratorio usa un método con su propio rango; compáralo con el rango impreso en tu informe.",
+        "tips": ["Frutos secos, semillas, legumbres y verduras de hoja", "Moderar el alcohol", "Valores bajos: consulta médica"]
+      },
+      "pt": {
+        "about": "Mineral chave para músculos, nervos e o ritmo cardíaco.",
+        "more": "Sem faixa de referência aqui porque cada laboratório usa um método com sua própria faixa; compare com a faixa impressa no seu laudo.",
+        "tips": ["Castanhas, sementes, leguminosas e verduras de folha", "Moderar o álcool", "Valores baixos: consulta médica"]
+      }
+    },
+    "alt": {
+      "es": {
+        "about": "Enzima del hígado que sube cuando sus células se dañan.",
+        "more": "Es el marcador más específico de daño hepático. Las causas más comunes son el hígado graso, el alcohol, algunos medicamentos y las hepatitis virales.",
+        "tips": ["Bajar peso si hay sobrepeso", "Reducir azúcares y alcohol", "Actividad física regular", "Consultar antes de tomar suplementos o medicamentos"]
+      },
+      "pt": {
+        "about": "Enzima do fígado que sobe quando suas células são danificadas.",
+        "more": "É o marcador mais específico de dano hepático. As causas mais comuns são a gordura no fígado, o álcool, alguns medicamentos e as hepatites virais.",
+        "tips": ["Perder peso se houver sobrepeso", "Reduzir açúcares e álcool", "Atividade física regular", "Consultar antes de tomar suplementos ou medicamentos"]
+      }
+    },
+    "ast": {
+      "es": {
+        "about": "Enzima presente en hígado y músculos.",
+        "more": "Sube con daño hepático, pero también con el ejercicio intenso. Se interpreta junto con la ALT.",
+        "tips": ["Evitar entrenar fuerte el día previo", "Reducir alcohol", "Bajar peso si hay sobrepeso"]
+      },
+      "pt": {
+        "about": "Enzima presente no fígado e nos músculos.",
+        "more": "Sobe com dano hepático, mas também com exercício intenso. Interpreta-se junto com a ALT.",
+        "tips": ["Evitar treino forte no dia anterior", "Reduzir álcool", "Perder peso se houver sobrepeso"]
+      }
+    },
+    "ggt": {
+      "es": {
+        "about": "Enzima del hígado y las vías biliares, muy sensible al alcohol.",
+        "more": "Es el marcador más sensible al consumo de alcohol, al hígado graso y a ciertos medicamentos.",
+        "tips": ["Reducir o evitar el alcohol", "Bajar peso si hay sobrepeso", "Revisar medicamentos con el médico"]
+      },
+      "pt": {
+        "about": "Enzima do fígado e das vias biliares, muito sensível ao álcool.",
+        "more": "É o marcador mais sensível ao consumo de álcool, à gordura no fígado e a certos medicamentos.",
+        "tips": ["Reduzir ou evitar o álcool", "Perder peso se houver sobrepeso", "Revisar medicamentos com o médico"]
+      }
+    },
+    "fal": {
+      "es": {
+        "about": "Enzima de las vías biliares y los huesos.",
+        "more": "Sube con problemas de la vía biliar, crecimiento óseo o fracturas en recuperación.",
+        "tips": ["Se interpreta junto con GGT y bilirrubina", "Valores altos: consulta médica"]
+      },
+      "pt": {
+        "about": "Enzima das vias biliares e dos ossos.",
+        "more": "Sobe com problemas da via biliar, crescimento ósseo ou fraturas em recuperação.",
+        "tips": ["Interpreta-se junto com GGT e bilirrubina", "Valores altos: consulta médica"]
+      }
+    },
+    "bili_total": {
+      "es": {
+        "about": "Pigmento amarillo que resulta de descomponer los glóbulos rojos viejos.",
+        "more": "Si sube, la piel y los ojos pueden verse amarillos. Puede ser benigno (síndrome de Gilbert, ayuno) o reflejar un problema del hígado o la vía biliar.",
+        "tips": ["Evitar ayunos largos antes del examen", "Valores altos: consulta médica"]
+      },
+      "pt": {
+        "about": "Pigmento amarelo que resulta da degradação das hemácias velhas.",
+        "more": "Se sobe, a pele e os olhos podem ficar amarelados. Pode ser benigno (síndrome de Gilbert, jejum) ou refletir um problema do fígado ou da via biliar.",
+        "tips": ["Evitar jejuns longos antes do exame", "Valores altos: consulta médica"]
+      }
+    },
+    "bili_dir": {
+      "es": {
+        "about": "Bilirrubina ya procesada por el hígado, lista para eliminarse.",
+        "more": "Si sube, suele indicar un problema en la eliminación por la bilis (hígado o vías biliares).",
+        "tips": ["Valores altos: consulta médica", "Reducir alcohol"]
+      },
+      "pt": {
+        "about": "Bilirrubina já processada pelo fígado, pronta para ser eliminada.",
+        "more": "Se sobe, costuma indicar um problema na eliminação pela bile (fígado ou vias biliares).",
+        "tips": ["Valores altos: consulta médica", "Reduzir álcool"]
+      }
+    },
+    "bili_ind": {
+      "es": {
+        "about": "Bilirrubina que aún no pasó por el hígado.",
+        "more": "Sube cuando se destruyen muchos glóbulos rojos o en el síndrome de Gilbert, una variante benigna frecuente.",
+        "tips": ["Evitar ayunos largos antes del examen", "Si es un valor aislado, suele ser benigno; confirma con tu médico"]
+      },
+      "pt": {
+        "about": "Bilirrubina que ainda não passou pelo fígado.",
+        "more": "Sobe quando muitas hemácias são destruídas ou na síndrome de Gilbert, uma variante benigna frequente.",
+        "tips": ["Evitar jejuns longos antes do exame", "Se for um valor isolado, costuma ser benigno; confirme com seu médico"]
+      }
+    },
+    "ldh": {
+      "es": {
+        "about": "Enzima presente en casi todos los tejidos.",
+        "more": "Sube con daño celular de cualquier origen: músculo, hígado, glóbulos rojos. Es poco específica; se interpreta con otros estudios.",
+        "tips": ["Evitar entrenamiento intenso el día previo", "Valores altos: el médico busca el origen"]
+      },
+      "pt": {
+        "about": "Enzima presente em quase todos os tecidos.",
+        "more": "Sobe com dano celular de qualquer origem: músculo, fígado, hemácias. É pouco específica; interpreta-se com outros exames.",
+        "tips": ["Evitar treino intenso no dia anterior", "Valores altos: o médico investiga a origem"]
+      }
+    },
+    "cpk": {
+      "es": {
+        "about": "Enzima de los músculos.",
+        "more": "Sube con el ejercicio intenso, lesiones musculares, algunos medicamentos (como las estatinas) y otros problemas musculares.",
+        "tips": ["Evitar ejercicio intenso 48 horas antes del examen", "Hidratarte bien", "Avisar al médico si tomas estatinas y tienes dolor muscular"]
+      },
+      "pt": {
+        "about": "Enzima dos músculos.",
+        "more": "Sobe com exercício intenso, lesões musculares, alguns medicamentos (como as estatinas) e outros problemas musculares.",
+        "tips": ["Evitar exercício intenso 48 horas antes do exame", "Hidratar-se bem", "Avisar o médico se toma estatinas e tem dor muscular"]
+      }
+    },
+    "prot_tot": {
+      "es": {
+        "about": "Total de proteínas de la sangre (albúmina y globulinas).",
+        "more": "Es un indicador general del estado nutricional, hepático y renal, y de las defensas.",
+        "tips": ["Dieta equilibrada con proteínas suficientes", "Valores alterados: se estudia por albúmina y globulinas"]
+      },
+      "pt": {
+        "about": "Total de proteínas do sangue (albumina e globulinas).",
+        "more": "É um indicador geral do estado nutricional, hepático e renal, e das defesas.",
+        "tips": ["Dieta equilibrada com proteínas suficientes", "Valores alterados: investiga-se por albumina e globulinas"]
+      }
+    },
+    "albumina": {
+      "es": {
+        "about": "Principal proteína de la sangre, producida por el hígado.",
+        "more": "Baja con mala nutrición, enfermedad hepática o renal e inflamación crónica; ayuda a mantener el agua dentro de los vasos.",
+        "tips": ["Comer proteínas suficientes", "Valores bajos: consulta médica"]
+      },
+      "pt": {
+        "about": "Principal proteína do sangue, produzida pelo fígado.",
+        "more": "Baixa com má nutrição, doença hepática ou renal e inflamação crônica; ajuda a manter a água dentro dos vasos.",
+        "tips": ["Comer proteínas suficientes", "Valores baixos: consulta médica"]
+      }
+    },
+    "globulinas": {
+      "es": {
+        "about": "Proteínas de la sangre que incluyen los anticuerpos.",
+        "more": "Suben con inflamación o infecciones crónicas y bajan con defensas disminuidas.",
+        "tips": ["Controlar infecciones o inflamación crónica", "Valores alterados: consulta médica"]
+      },
+      "pt": {
+        "about": "Proteínas do sangue que incluem os anticorpos.",
+        "more": "Sobem com inflamação ou infecções crônicas e baixam com defesas diminuídas.",
+        "tips": ["Controlar infecções ou inflamação crônica", "Valores alterados: consulta médica"]
+      }
+    },
+    "tsh": {
+      "es": {
+        "about": "Hormona de la hipófisis que le indica a la tiroides cuánto trabajar.",
+        "more": "Es la prueba de primera línea de la tiroides. TSH alta suele indicar tiroides lenta (hipotiroidismo); TSH baja, tiroides acelerada (hipertiroidismo).",
+        "tips": ["Tomar la medicación tiroidea en ayunas si te la indicaron", "Consumo adecuado de yodo (sal yodada)", "Valores alterados: consulta médica"]
+      },
+      "pt": {
+        "about": "Hormônio da hipófise que diz à tireoide quanto trabalhar.",
+        "more": "É o exame de primeira linha da tireoide. TSH alto costuma indicar tireoide lenta (hipotireoidismo); TSH baixo, tireoide acelerada (hipertireoidismo).",
+        "tips": ["Tomar a medicação da tireoide em jejum se foi indicada", "Consumo adequado de iodo (sal iodado)", "Valores alterados: consulta médica"]
+      }
+    },
+    "t4l": {
+      "es": {
+        "about": "Hormona tiroidea activa disponible en la sangre.",
+        "more": "Confirma lo que indica la TSH: baja en el hipotiroidismo y alta en el hipertiroidismo.",
+        "tips": ["Se interpreta junto con la TSH", "Valores alterados: consulta médica"]
+      },
+      "pt": {
+        "about": "Hormônio tireoidiano ativo disponível no sangue.",
+        "more": "Confirma o que indica o TSH: baixo no hipotireoidismo e alto no hipertireoidismo.",
+        "tips": ["Interpreta-se junto com o TSH", "Valores alterados: consulta médica"]
+      }
+    },
+    "testo_total": {
+      "es": {
+        "about": "Principal hormona sexual masculina, en sangre.",
+        "more": "Influye en energía, libido, masa muscular y ánimo. Baja con la edad, el sobrepeso, el mal sueño y el estrés; el valor varía durante el día, por eso se mide por la mañana.",
+        "tips": ["Dormir 7–8 horas", "Entrenamiento de fuerza", "Bajar el exceso de grasa abdominal", "Moderar el alcohol y manejar el estrés"]
+      },
+      "pt": {
+        "about": "Principal hormônio sexual masculino, no sangue.",
+        "more": "Influencia energia, libido, massa muscular e humor. Baixa com a idade, o sobrepeso, o sono ruim e o estresse; o valor varia ao longo do dia, por isso se mede de manhã.",
+        "tips": ["Dormir 7–8 horas", "Treino de força", "Reduzir o excesso de gordura abdominal", "Moderar o álcool e manejar o estresse"]
+      }
+    },
+    "testo_libre": {
+      "es": {
+        "about": "Fracción de la testosterona que no está unida a proteínas.",
+        "more": "Es la parte que realmente actúa en los tejidos. Depende de la testosterona total y de la SHBG.",
+        "tips": ["Dormir bien", "Entrenamiento de fuerza", "Bajar peso si hay sobrepeso"]
+      },
+      "pt": {
+        "about": "Fração da testosterona que não está ligada a proteínas.",
+        "more": "É a parte que realmente atua nos tecidos. Depende da testosterona total e da SHBG.",
+        "tips": ["Dormir bem", "Treino de força", "Perder peso se houver sobrepeso"]
+      }
+    },
+    "testo_biodisp": {
+      "es": {
+        "about": "Testosterona libre más la que está débilmente unida a albúmina.",
+        "more": "Es la fracción que el cuerpo puede usar. Se calcula a partir de la total, la SHBG y la albúmina.",
+        "tips": ["Dormir bien", "Entrenamiento de fuerza", "Bajar peso si hay sobrepeso"]
+      },
+      "pt": {
+        "about": "Testosterona livre mais a que está fracamente ligada à albumina.",
+        "more": "É a fração que o corpo pode usar. Calcula-se a partir da total, da SHBG e da albumina.",
+        "tips": ["Dormir bem", "Treino de força", "Perder peso se houver sobrepeso"]
+      }
+    },
+    "shbg": {
+      "es": {
+        "about": "Proteína que transporta las hormonas sexuales en la sangre.",
+        "more": "Cuando sube, deja menos testosterona libre disponible. Baja con sobrepeso y resistencia a la insulina; sube con la edad y algunas enfermedades hepáticas o tiroideas.",
+        "tips": ["Bajar peso si hay sobrepeso", "Actividad física regular", "Reducir azúcares"]
+      },
+      "pt": {
+        "about": "Proteína que transporta os hormônios sexuais no sangue.",
+        "more": "Quando sobe, deixa menos testosterona livre disponível. Baixa com sobrepeso e resistência à insulina; sobe com a idade e algumas doenças hepáticas ou tireoidianas.",
+        "tips": ["Perder peso se houver sobrepeso", "Atividade física regular", "Reduzir açúcares"]
+      }
+    },
+    "cortisol8": {
+      "es": {
+        "about": "Hormona del estrés, medida a las 8 de la mañana cuando está en su pico.",
+        "more": "Ayuda a regular energía, presión y azúcar. El valor cambia con el estrés, el sueño y la hora de la extracción.",
+        "tips": ["Dormir bien la noche anterior", "Manejar el estrés (actividad física, respiración, descanso)", "Valores muy fuera de rango: consulta médica"]
+      },
+      "pt": {
+        "about": "Hormônio do estresse, medido às 8 da manhã, quando está no pico.",
+        "more": "Ajuda a regular energia, pressão e açúcar. O valor muda com o estresse, o sono e a hora da coleta.",
+        "tips": ["Dormir bem na noite anterior", "Manejar o estresse (atividade física, respiração, descanso)", "Valores muito fora da faixa: consulta médica"]
+      }
+    },
+    "vitd": {
+      "es": {
+        "about": "Vitamina que ayuda a absorber calcio y mantiene huesos y músculos.",
+        "more": "La falta es muy común. Menos de 20 ng/mL es deficiencia; 20–29, insuficiencia; desde 30 se considera suficiente. Mucho exceso (por suplementos) también es perjudicial.",
+        "tips": ["Tomar sol 15–20 minutos al día en brazos y piernas", "Pescados grasos, huevos y lácteos fortificados", "Suplementar solo si el médico lo indica y con dosis controladas"]
+      },
+      "pt": {
+        "about": "Vitamina que ajuda a absorver cálcio e mantém ossos e músculos.",
+        "more": "A falta é muito comum. Menos de 20 ng/mL é deficiência; 20–29, insuficiência; a partir de 30 considera-se suficiente. Muito excesso (por suplementos) também é prejudicial.",
+        "tips": ["Tomar sol 15–20 minutos por dia em braços e pernas", "Peixes gordos, ovos e laticínios fortificados", "Suplementar apenas se o médico indicar e com doses controladas"]
+      }
+    },
+    "b12": {
+      "es": {
+        "about": "Vitamina necesaria para los nervios y para fabricar glóbulos rojos.",
+        "more": "Sale de alimentos de origen animal. Su falta causa cansancio, hormigueos y anemia; es más común en vegetarianos, mayores y con ciertos antiácidos o metformina.",
+        "tips": ["Carnes, pescado, huevos y lácteos", "Suplemento si eres vegetariano o vegano", "Valores bajos: consulta médica"]
+      },
+      "pt": {
+        "about": "Vitamina necessária para os nervos e para fabricar hemácias.",
+        "more": "Vem de alimentos de origem animal. A falta causa cansaço, formigamentos e anemia; é mais comum em vegetarianos, idosos e com certos antiácidos ou metformina.",
+        "tips": ["Carnes, peixe, ovos e laticínios", "Suplemento se for vegetariano ou vegano", "Valores baixos: consulta médica"]
+      }
+    },
+    "hierro": {
+      "es": {
+        "about": "Hierro que circula en la sangre en este momento.",
+        "more": "Varía mucho durante el día y con la última comida. Por sí solo dice poco: se evalúa con ferritina, TIBC y saturación de transferrina.",
+        "tips": ["Hacer el examen en ayunas", "Carnes, legumbres y verduras de hoja, con vitamina C", "Valores alterados: consulta médica"]
+      },
+      "pt": {
+        "about": "Ferro que circula no sangue neste momento.",
+        "more": "Varia muito ao longo do dia e com a última refeição. Sozinho diz pouco: avalia-se com ferritina, TIBC e saturação de transferrina.",
+        "tips": ["Fazer o exame em jejum", "Carnes, leguminosas e verduras de folha, com vitamina C", "Valores alterados: consulta médica"]
+      }
+    },
+    "tibc": {
+      "es": {
+        "about": "Capacidad de la sangre para transportar hierro.",
+        "more": "Sube cuando faltan reservas de hierro (el cuerpo busca captar más) y baja con inflamación o desnutrición.",
+        "tips": ["Se interpreta junto con hierro y ferritina", "Valores alterados: consulta médica"]
+      },
+      "pt": {
+        "about": "Capacidade do sangue de transportar ferro.",
+        "more": "Sobe quando faltam reservas de ferro (o corpo procura captar mais) e baixa com inflamação ou desnutrição.",
+        "tips": ["Interpreta-se junto com ferro e ferritina", "Valores alterados: consulta médica"]
+      }
+    },
+    "sat_transf": {
+      "es": {
+        "about": "Qué porcentaje del transportador de hierro está ocupado.",
+        "more": "Baja cuando falta hierro y sube cuando hay exceso. Un valor alto sostenido merece estudiar el exceso de hierro.",
+        "tips": ["No tomar suplementos de hierro sin indicación", "Valores alterados: consulta médica"]
+      },
+      "pt": {
+        "about": "Qual porcentagem do transportador de ferro está ocupada.",
+        "more": "Baixa quando falta ferro e sobe quando há excesso. Um valor alto mantido merece investigar o excesso de ferro.",
+        "tips": ["Não tomar suplementos de ferro sem indicação", "Valores alterados: consulta médica"]
+      }
+    },
+    "ferritina": {
+      "es": {
+        "about": "Proteína que guarda el hierro del cuerpo; refleja las reservas.",
+        "more": "Baja con falta de hierro y alta con exceso de hierro, pero también sube con inflamación, hígado graso y alcohol, aunque las reservas sean normales.",
+        "tips": ["Si está baja: carnes, legumbres y verduras de hoja con vitamina C", "Si está alta: reducir alcohol y bajar peso si hay sobrepeso", "Consultar antes de suplementar hierro"]
+      },
+      "pt": {
+        "about": "Proteína que guarda o ferro do corpo; reflete as reservas.",
+        "more": "Baixa com falta de ferro e alta com excesso de ferro, mas também sobe com inflamação, gordura no fígado e álcool, mesmo com reservas normais.",
+        "tips": ["Se estiver baixa: carnes, leguminosas e verduras de folha com vitamina C", "Se estiver alta: reduzir álcool e perder peso se houver sobrepeso", "Consultar antes de suplementar ferro"]
+      }
+    },
+    "psa": {
+      "es": {
+        "about": "Proteína producida por la próstata; se usa para vigilarla.",
+        "more": "Puede subir con el crecimiento benigno de la próstata, una infección o inflamación, la eyaculación o el ciclismo, y también con el cáncer. Un valor alto no es un diagnóstico: se interpreta con la edad, el tacto y la evolución en el tiempo.",
+        "tips": ["Evitar ciclismo y eyaculación 48 horas antes del examen", "Repetir el examen si sale alterado, como indique el médico", "Seguimiento regular con urología"]
+      },
+      "pt": {
+        "about": "Proteína produzida pela próstata; usa-se para vigiá-la.",
+        "more": "Pode subir com o crescimento benigno da próstata, infecção ou inflamação, ejaculação ou ciclismo, e também com o câncer. Um valor alto não é diagnóstico: interpreta-se com a idade, o toque e a evolução ao longo do tempo.",
+        "tips": ["Evitar ciclismo e ejaculação 48 horas antes do exame", "Repetir o exame se sair alterado, conforme o médico indicar", "Acompanhamento regular com urologia"]
+      }
+    }
+  }
+}

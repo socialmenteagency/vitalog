@@ -1,0 +1,391 @@
+{
+ "note": "Datos DUMMY para diseño — valores inventados, no pertenecen a ninguna persona real.",
+ "exams": [
+  {
+   "date": "2023-08-15",
+   "lab": "Laboratorio Ejemplo",
+   "results": {
+    "hb": 15.2,
+    "hto": 45.1,
+    "gr": 5.05,
+    "gb": 6.8,
+    "plaq": 235,
+    "col_total": 228,
+    "hdl": 38,
+    "ldl": 158,
+    "tg": 190,
+    "glucemia": 105,
+    "hba1c": 5.9,
+    "creatinina": 1.02,
+    "urea": 34,
+    "ac_urico": 6.9,
+    "ast": 32,
+    "alt": 44,
+    "ggt": 68,
+    "bili_total": 0.8,
+    "fal": 78,
+    "tsh": 2.1,
+    "t4l": 1.2,
+    "vitd": 18,
+    "b12": 385,
+    "ferritina": 210,
+    "hierro": 95,
+    "psa": 0.8
+   }
+  },
+  {
+   "date": "2024-04-02",
+   "lab": "Clínica Ejemplo",
+   "results": {
+    "hb": 15.0,
+    "hto": 44.6,
+    "gr": 4.98,
+    "gb": 7.2,
+    "plaq": 248,
+    "col_total": 212,
+    "hdl": 42,
+    "ldl": 142,
+    "tg": 160,
+    "glucemia": 102,
+    "hba1c": 5.8,
+    "creatinina": 0.98,
+    "urea": 31,
+    "ac_urico": 6.4,
+    "egfr": 92,
+    "ast": 28,
+    "alt": 38,
+    "ggt": 45,
+    "bili_total": 0.7,
+    "fal": 74,
+    "tsh": 2.3,
+    "vitd": 24,
+    "b12": 410,
+    "ferritina": 195,
+    "hierro": 102,
+    "psa": 0.9
+   }
+  },
+  {
+   "date": "2025-03-20",
+   "lab": "Laboratorio Ejemplo",
+   "results": {
+    "hb": 15.3,
+    "hto": 45.4,
+    "gr": 5.1,
+    "gb": 6.5,
+    "plaq": 240,
+    "col_total": 198,
+    "hdl": 48,
+    "ldl": 127,
+    "tg": 135,
+    "glucemia": 98,
+    "hba1c": 5.6,
+    "insulina": 11.2,
+    "creatinina": 0.95,
+    "urea": 29,
+    "ac_urico": 5.9,
+    "egfr": 96,
+    "ast": 25,
+    "alt": 31,
+    "ggt": 38,
+    "bili_total": 0.7,
+    "fal": 71,
+    "tsh": 1.9,
+    "t4l": 1.3,
+    "vitd": 33,
+    "b12": 445,
+    "ferritina": 180,
+    "hierro": 108,
+    "psa": 0.9
+   }
+  },
+  {
+   "date": "2026-07-28",
+   "lab": "Laboratorio Ejemplo",
+   "results": {
+    "hb": 15.1,
+    "hto": 45.0,
+    "gr": 5.02,
+    "gb": 6.1,
+    "plaq": 252,
+    "col_total": 186,
+    "hdl": 55,
+    "ldl": 114,
+    "tg": 110,
+    "glucemia": 94,
+    "hba1c": 5.4,
+    "insulina": 8.6,
+    "creatinina": 0.93,
+    "urea": 28,
+    "ac_urico": 5.5,
+    "egfr": 98,
+    "ast": 23,
+    "alt": 27,
+    "ggt": 30,
+    "bili_total": 0.6,
+    "fal": 69,
+    "tsh": 2.0,
+    "t4l": 1.25,
+    "vitd": 41,
+    "b12": 480,
+    "ferritina": 172,
+    "hierro": 112,
+    "psa": 1.0
+   }
+  }
+ ],
+ "health": [
+  {
+   "month": "2023-09",
+   "weight": 88.0,
+   "exercise": 10,
+   "resting_hr": 62,
+   "steps": 6624
+  },
+  {
+   "month": "2023-10",
+   "weight": 87.6,
+   "exercise": 14,
+   "resting_hr": 63,
+   "steps": 6554
+  },
+  {
+   "month": "2023-11",
+   "weight": 88.0,
+   "exercise": 11,
+   "resting_hr": 62,
+   "steps": 7157
+  },
+  {
+   "month": "2023-12",
+   "weight": 87.8,
+   "exercise": 12,
+   "resting_hr": 62,
+   "steps": 6681
+  },
+  {
+   "month": "2024-01",
+   "weight": 87.7,
+   "exercise": 12,
+   "resting_hr": 62,
+   "steps": 7247
+  },
+  {
+   "month": "2024-02",
+   "weight": 87.4,
+   "exercise": 13,
+   "resting_hr": 62,
+   "steps": 7180
+  },
+  {
+   "month": "2024-03",
+   "weight": 87.4,
+   "exercise": 12,
+   "resting_hr": 62,
+   "steps": 6975
+  },
+  {
+   "month": "2024-04",
+   "weight": 87.2,
+   "exercise": 14,
+   "resting_hr": 61,
+   "steps": 7527
+  },
+  {
+   "month": "2024-05",
+   "weight": 87.1,
+   "exercise": 15,
+   "resting_hr": 61,
+   "steps": 7160
+  },
+  {
+   "month": "2024-06",
+   "weight": 86.3,
+   "exercise": 13,
+   "resting_hr": 61,
+   "steps": 6759
+  },
+  {
+   "month": "2024-07",
+   "weight": 86.5,
+   "exercise": 13,
+   "resting_hr": 61,
+   "steps": 6498
+  },
+  {
+   "month": "2024-08",
+   "weight": 86.4,
+   "exercise": 12,
+   "resting_hr": 61,
+   "steps": 6622
+  },
+  {
+   "month": "2024-09",
+   "weight": 86.0,
+   "exercise": 18,
+   "resting_hr": 61,
+   "steps": 7959
+  },
+  {
+   "month": "2024-10",
+   "weight": 85.5,
+   "exercise": 19,
+   "resting_hr": 60,
+   "steps": 8464
+  },
+  {
+   "month": "2024-11",
+   "weight": 85.0,
+   "exercise": 17,
+   "resting_hr": 59,
+   "steps": 7864
+  },
+  {
+   "month": "2024-12",
+   "weight": 85.2,
+   "exercise": 17,
+   "resting_hr": 59,
+   "steps": 8066
+  },
+  {
+   "month": "2025-01",
+   "weight": 85.1,
+   "exercise": 19,
+   "resting_hr": 59,
+   "steps": 8573
+  },
+  {
+   "month": "2025-02",
+   "weight": 84.0,
+   "exercise": 19,
+   "resting_hr": 60,
+   "steps": 8996
+  },
+  {
+   "month": "2025-03",
+   "weight": 84.0,
+   "exercise": 21,
+   "resting_hr": 58,
+   "steps": 8729
+  },
+  {
+   "month": "2025-04",
+   "weight": 83.7,
+   "exercise": 19,
+   "resting_hr": 58,
+   "steps": 8651
+  },
+  {
+   "month": "2025-05",
+   "weight": 83.6,
+   "exercise": 22,
+   "resting_hr": 58,
+   "steps": 9333
+  },
+  {
+   "month": "2025-06",
+   "weight": 83.1,
+   "exercise": 19,
+   "resting_hr": 58,
+   "steps": 7607
+  },
+  {
+   "month": "2025-07",
+   "weight": 82.5,
+   "exercise": 15,
+   "resting_hr": 57,
+   "steps": 8521
+  },
+  {
+   "month": "2025-08",
+   "weight": 82.3,
+   "exercise": 17,
+   "resting_hr": 58,
+   "steps": 8055
+  },
+  {
+   "month": "2025-09",
+   "weight": 82.5,
+   "exercise": 22,
+   "resting_hr": 58,
+   "steps": 8913
+  },
+  {
+   "month": "2025-10",
+   "weight": 82.0,
+   "exercise": 26,
+   "resting_hr": 57,
+   "steps": 8989
+  },
+  {
+   "month": "2025-11",
+   "weight": 81.8,
+   "exercise": 23,
+   "resting_hr": 57,
+   "steps": 9283
+  },
+  {
+   "month": "2025-12",
+   "weight": 82.1,
+   "exercise": 25,
+   "resting_hr": 57,
+   "steps": 9893
+  },
+  {
+   "month": "2026-01",
+   "weight": 82.1,
+   "exercise": 23,
+   "resting_hr": 57,
+   "steps": 9361
+  },
+  {
+   "month": "2026-02",
+   "weight": 81.5,
+   "exercise": 23,
+   "resting_hr": 56,
+   "steps": 9864
+  },
+  {
+   "month": "2026-03",
+   "weight": 81.1,
+   "exercise": 26,
+   "resting_hr": 57,
+   "steps": 10025
+  },
+  {
+   "month": "2026-04",
+   "weight": 81.3,
+   "exercise": 24,
+   "resting_hr": 56,
+   "steps": 9861
+  },
+  {
+   "month": "2026-05",
+   "weight": 81.6,
+   "exercise": 27,
+   "resting_hr": 57,
+   "steps": 10139
+  },
+  {
+   "month": "2026-06",
+   "weight": 81.4,
+   "exercise": 20,
+   "resting_hr": 56,
+   "steps": 8857
+  },
+  {
+   "month": "2026-07",
+   "weight": 81.2,
+   "exercise": 23,
+   "resting_hr": 55,
+   "steps": 8957
+  },
+  {
+   "month": "2026-08",
+   "weight": 81.2,
+   "exercise": 22,
+   "resting_hr": 56,
+   "steps": 9206
+  }
+ ]
+}

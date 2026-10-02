@@ -1,0 +1,128 @@
+{
+  "ui": {
+    "es": {
+      "recent": "Reciente",
+      "recent_note": "Sin examen de laboratorio: solo signos vitales de Apple Health",
+      "height_needed": "Agrega tu estatura en el backend (Perfil) para ver el rango saludable de peso",
+      "bmi_note": "IMC 18,5–24,9"
+    },
+    "pt": {
+      "recent": "Recente",
+      "recent_note": "Sem exame laboratorial: apenas sinais vitais do Apple Health",
+      "height_needed": "Adicione sua altura no backend (Perfil) para ver a faixa saudável de peso",
+      "bmi_note": "IMC 18,5–24,9"
+    }
+  },
+  "tiers": {
+    "steps": [
+      {"from": null, "to": 5000, "level": "bad", "r": "<5.000", "es": "Sedentario", "pt": "Sedentário"},
+      {"from": 5000, "to": 7000, "level": "warn", "r": "5.000–6.999", "es": "Poco activo", "pt": "Pouco ativo"},
+      {"from": 7000, "to": null, "level": "ok", "r": "≥7.000", "es": "Activo", "pt": "Ativo"}
+    ],
+    "exercise": [
+      {"from": null, "to": 10, "level": "bad", "r": "<10", "es": "Muy poco", "pt": "Muito pouco"},
+      {"from": 10, "to": 21, "level": "warn", "r": "10–20", "es": "Por debajo de la meta", "pt": "Abaixo da meta"},
+      {"from": 21, "to": null, "level": "ok", "r": "≥21", "es": "Meta cumplida", "pt": "Meta cumprida"}
+    ],
+    "resting_hr": [
+      {"from": null, "to": 50, "level": "warn", "r": "<50", "es": "Baja", "pt": "Baixa"},
+      {"from": 50, "to": 100, "level": "ok", "r": "50–99", "es": "Normal", "pt": "Normal"},
+      {"from": 100, "to": null, "level": "bad", "r": "≥100", "es": "Elevada", "pt": "Elevada"}
+    ]
+  },
+  "ref": {
+    "steps": {"es": "≥ 7.000 pasos/día", "pt": "≥ 7.000 passos/dia"},
+    "exercise": {"es": "≥ 21 min/día (OMS: 150 min/semana)", "pt": "≥ 21 min/dia (OMS: 150 min/semana)"},
+    "resting_hr": {"es": "50–100 lpm", "pt": "50–100 bpm"}
+  },
+  "info": {
+    "steps": {
+      "es": {
+        "about": "Cuántos pasos das en promedio por día cada mes, según tu iPhone y tu Apple Watch (sin contar dos veces los mismos pasos).",
+        "more": "Los pasos son una medida simple de cuánto te mueves durante el día. En estudios grandes, el riesgo cardiovascular y de mortalidad baja a medida que suben los pasos diarios hasta alrededor de 7.000–10.000; moverte más que antes ya ayuda aunque no llegues a esa cifra. Más movimiento se asocia con mejor peso, glucosa, presión arterial y colesterol.",
+        "tips": [
+          "Suma de a poco: apunta a +1.000 pasos por día sobre tu promedio actual y mantenlo un mes antes de subir otra vez.",
+          "Camina 10–15 minutos después de las comidas: ayuda a que la glucosa no suba tanto.",
+          "Usa escaleras, bájate una parada antes o estaciona más lejos.",
+          "Haz las llamadas caminando."
+        ]
+      },
+      "pt": {
+        "about": "Quantos passos você dá em média por dia a cada mês, segundo seu iPhone e seu Apple Watch (sem contar os mesmos passos duas vezes).",
+        "more": "Os passos são uma medida simples de quanto você se movimenta no dia. Em grandes estudos, o risco cardiovascular e de mortalidade diminui conforme os passos diários aumentam até cerca de 7.000–10.000; se movimentar mais do que antes já ajuda, mesmo sem chegar a esse número. Mais movimento se associa a melhor peso, glicose, pressão arterial e colesterol.",
+        "tips": [
+          "Aumente aos poucos: mire +1.000 passos por dia sobre sua média atual e mantenha por um mês antes de subir de novo.",
+          "Caminhe 10–15 minutos depois das refeições: ajuda a glicose a não subir tanto.",
+          "Use escadas, desça um ponto antes ou estacione mais longe.",
+          "Faça as ligações caminhando."
+        ]
+      }
+    },
+    "exercise": {
+      "es": {
+        "about": "Minutos por día de actividad de intensidad al menos moderada (por ejemplo caminar rápido) que registra el Apple Watch.",
+        "more": "La OMS recomienda para adultos al menos 150 minutos por semana de actividad aeróbica moderada (unos 21 minutos al día) y sumar ejercicios de fuerza dos veces por semana. Quedarte por debajo no es inútil: cada minuto extra cuenta y los mayores beneficios aparecen al pasar de poco o nada a algo. Este dato solo existe desde que usas el Apple Watch.",
+        "tips": [
+          "Camina a paso rápido (que puedas hablar pero no cantar) unos 30 minutos, 5 días por semana.",
+          "Caminar rápido cuenta tanto como correr si mantienes el ritmo y la regularidad.",
+          "Suma 2 sesiones semanales de fuerza (pesas, bandas elásticas o tu propio peso).",
+          "Ponlo en la agenda como una cita fija: la constancia pesa más que la intensidad."
+        ]
+      },
+      "pt": {
+        "about": "Minutos por dia de atividade de intensidade pelo menos moderada (por exemplo, caminhada rápida) registrados pelo Apple Watch.",
+        "more": "A OMS recomenda para adultos pelo menos 150 minutos por semana de atividade aeróbica moderada (cerca de 21 minutos por dia) e incluir exercícios de força duas vezes por semana. Ficar abaixo disso não é inútil: cada minuto extra conta e os maiores benefícios aparecem ao passar de pouco ou nada para algo. Este dado só existe desde que você usa o Apple Watch.",
+        "tips": [
+          "Caminhe em ritmo rápido (que dê para conversar, mas não cantar) cerca de 30 minutos, 5 dias por semana.",
+          "Caminhar rápido conta tanto quanto correr se você mantiver o ritmo e a regularidade.",
+          "Inclua 2 sessões semanais de força (pesos, elásticos ou o próprio peso).",
+          "Coloque na agenda como um compromisso fixo: a constância pesa mais que a intensidade."
+        ]
+      }
+    },
+    "resting_hr": {
+      "es": {
+        "about": "Tus latidos por minuto en reposo, promedio de cada mes según el Apple Watch.",
+        "more": "En adultos suele estar entre 60 y 100 latidos por minuto, y en personas entrenadas puede ser menor. Una frecuencia en reposo más baja suele reflejar mejor condición cardiovascular. Una que sube de forma sostenida, sin una causa como fiebre, estrés, cafeína o poco sueño, conviene comentarla con tu médico.",
+        "tips": [
+          "El ejercicio aeróbico regular la va bajando en semanas o meses.",
+          "Dormir lo suficiente y bajar el estrés ayudan: ambos la elevan.",
+          "Modera el alcohol y la cafeína, sobre todo por la tarde.",
+          "Si en reposo ves valores sobre 100, o bajo 50 con mareos o cansancio, consúltalo."
+        ]
+      },
+      "pt": {
+        "about": "Seus batimentos por minuto em repouso, média de cada mês segundo o Apple Watch.",
+        "more": "Em adultos costuma ficar entre 60 e 100 batimentos por minuto e, em pessoas treinadas, pode ser menor. Uma frequência em repouso mais baixa costuma refletir melhor condicionamento cardiovascular. Uma que sobe de forma sustentada, sem causa como febre, estresse, cafeína ou pouco sono, vale conversar com seu médico.",
+        "tips": [
+          "O exercício aeróbico regular vai reduzindo a frequência em semanas ou meses.",
+          "Dormir o suficiente e reduzir o estresse ajudam: ambos a elevam.",
+          "Modere o álcool e a cafeína, principalmente à tarde.",
+          "Se em repouso você vir valores acima de 100, ou abaixo de 50 com tontura ou cansaço, consulte."
+        ]
+      }
+    },
+    "weight": {
+      "es": {
+        "about": "Tu peso promedio de cada mes. Se interpreta junto con tu estatura mediante el índice de masa corporal (IMC).",
+        "more": "El IMC (peso en kg dividido por la estatura en metros al cuadrado) es una guía simple: 18,5–24,9 se considera saludable, 25–29,9 sobrepeso y 30 o más obesidad. No distingue músculo de grasa ni dónde se acumula; la circunferencia de cintura y los análisis (glucosa, triglicéridos, colesterol) completan el cuadro. Bajar entre 5 y 10 % del peso suele mejorar la glucosa, la presión y los lípidos.",
+        "tips": [
+          "Apunta a bajar 0,25–0,5 kg por semana: bajar más rápido suele rebotar.",
+          "Prioriza proteínas, fibra y verduras: sacian más con menos calorías.",
+          "Reduce primero las bebidas azucaradas y los ultraprocesados.",
+          "Pésate a la misma hora y mira la tendencia mensual, no el día a día."
+        ]
+      },
+      "pt": {
+        "about": "Seu peso médio de cada mês. É interpretado junto com sua altura por meio do índice de massa corporal (IMC).",
+        "more": "O IMC (peso em kg dividido pela altura em metros ao quadrado) é um guia simples: 18,5–24,9 é considerado saudável, 25–29,9 sobrepeso e 30 ou mais obesidade. Não distingue músculo de gordura nem onde ela se acumula; a circunferência da cintura e os exames (glicose, triglicerídeos, colesterol) completam o quadro. Perder entre 5 e 10 % do peso costuma melhorar a glicose, a pressão e os lipídios.",
+        "tips": [
+          "Mire em perder 0,25–0,5 kg por semana: perder mais rápido costuma voltar.",
+          "Priorize proteínas, fibras e verduras: saciam mais com menos calorias.",
+          "Reduza primeiro as bebidas açucaradas e os ultraprocessados.",
+          "Pese-se no mesmo horário e olhe a tendência mensal, não o dia a dia."
+        ]
+      }
+    }
+  }
+}

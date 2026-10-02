@@ -1,0 +1,3 @@
+# Nada de esta carpeta se sirve por web: base SQLite, PDFs de exámenes y config.
+# Los PDFs se sirven solo vía backend/index.php?pdf=N con sesión admin.
+Require all denied

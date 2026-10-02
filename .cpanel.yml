@@ -1,0 +1,15 @@
+# Deploy automático de cPanel Git Version Control.
+# IMPORTANTE: cPanel solo lee .cpanel.yml en la RAÍZ del repo clonado.
+# Este archivo está pensado para un repo dedicado cuyo contenido sea esta
+# carpeta app/ (ver DEPLOY.md). Copia código; nunca toca data/ (base, PDFs,
+# config.php sobreviven cada deploy).
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/$USER/public_html
+    - /bin/mkdir -p $DEPLOYPATH/salud $DEPLOYPATH/backend $DEPLOYPATH/lib $DEPLOYPATH/data
+    - /bin/cp -R salud/. $DEPLOYPATH/salud/
+    - /bin/cp -R backend/. $DEPLOYPATH/backend/
+    - /bin/cp -R lib/. $DEPLOYPATH/lib/
+    - /bin/cp config.sample.php $DEPLOYPATH/config.sample.php
+    - /bin/cp data/.htaccess $DEPLOYPATH/data/.htaccess
